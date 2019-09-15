@@ -4,18 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\AuthorizationRequest;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class AuthorizationsController extends Controller
 {
     //
-
     public function store(AuthorizationRequest $request)
     {
         $credentials['phone']    = $request->phone;
         $credentials['password'] = $request->password;
 
-        if($token = \Auth::guard('api')->attempt($credentials)){
+        if(!$token = \Auth::guard('api')->attempt($credentials)){
             return $this->response->errorUnauthorized('用户名或密码错误');
         }
 
