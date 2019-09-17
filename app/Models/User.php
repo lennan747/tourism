@@ -21,6 +21,10 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'phone',
         'email',
+        'parent_id',
+        'tree',
+        'money',
+        'avatar',
         'password',
     ];
 
@@ -40,6 +44,8 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'parent_id'         => 'integer',
+        'money'             => 'decimal:10,2'
     ];
 
     //public function

@@ -14,4 +14,11 @@ class CaptchaRequest extends FormRequest
             ]
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'phone.unique' => '该手机号已经注册'
+        ];
+    }
 }

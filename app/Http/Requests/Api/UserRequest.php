@@ -14,9 +14,14 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
-            'password' => 'required|string|min:6',
-            'verification_key' => 'required|string',
+            // TODO  暂时为user id 后期改为邀请码
+            // 邀请码以为空，存在就必须存在在users表中的id
+            'parent_id'         => [
+                'nullable',
+                'exists:users,id'
+            ],
+            'password'          => 'required|string|min:6',
+            'verification_key'  => 'required|string',
             'verification_code' => 'required|string',
         ];
     }
