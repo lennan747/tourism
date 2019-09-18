@@ -13,17 +13,20 @@ class UsersController extends Controller
     {
         $verifyData = \Cache::get($request->verification_key);
 
+        // 422
         if (!$verifyData) {
             return $this->response->error('验证码已失效', 422);
         }
 
+        // 返回401
         if (!hash_equals($verifyData['code'], $request->verification_code)) {
-            // 返回401
             return $this->response->errorUnauthorized('验证码错误');
         }
 
+        // 创建用户
         $user = User::create([
-            'phone' => $verifyData['phone'],
+            'parent_id' => isset($request->parent_id) ? $request->parent_id : 0,
+            'phone'     => $verifyData['phone'],
             'password' => bcrypt($request->password),
         ]);
 

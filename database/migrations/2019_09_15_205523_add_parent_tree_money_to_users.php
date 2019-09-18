@@ -15,9 +15,9 @@ class AddParentTreeMoneyToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->bigInteger('parent_id')->default(0)->after('remember_token');
-            $table->string('tree')->after('parent_id');
-            $table->decimal('money',10,2)->default(0,00)->after('tree');
+            $table->bigInteger('parent_id')->nullable()->default(0)->after('remember_token');
+            $table->string('tree')->nullable()->after('parent_id');
+            $table->decimal('money',10,2)->nullable()->default(0,00)->after('tree');
             $table->string('avatar')->nullable()->after('money');
         });
     }
