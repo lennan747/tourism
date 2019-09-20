@@ -12,6 +12,18 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    const USER_IDENTITY_ORDINARY = 'ordinary';
+    const USER_IDENTITY_STORE = 'store';
+    const USER_IDENTITY_DIRECTOR = 'director';
+    const USER_IDENTITY_PLAYER = 'player';
+
+    public static $userIdentityMap = [
+        self::USER_IDENTITY_ORDINARY    => '普通用户',
+        self::USER_IDENTITY_STORE       => '门店经理',
+        self::USER_IDENTITY_DIRECTOR    => '部门经理',
+        self::USER_IDENTITY_PLAYER      => '运营总监',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -19,6 +31,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'name',
+        'identity',
         'phone',
         'email',
         'parent_id',
