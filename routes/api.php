@@ -21,7 +21,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api',
-    'middleware' => ['cors'],
+    'middleware' => ['cors','serializer:array'],
 ], function($api) {
     $api->group([
         'middleware' => 'api.throttle',
