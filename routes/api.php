@@ -13,10 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', [
@@ -47,16 +43,15 @@ $api->version('v1', [
         $api->delete('authorizations/current', 'AuthorizationsController@destroy')
             ->name('api.authorizations.destroy');
 
-
         // 需要 token 验证的接口
         $api->group(['middleware' => 'api.auth'], function($api) {
             // 当前登录用户信息
             $api->get('user', 'UsersController@me')
                 ->name('api.user.show');
 
-            // 用户二维码
-            $api->get('user/captcha','CaptchasController@store')
-                ->name('api.user.captcha');
+            // 购买前的验证码
+            $api->get('manager/captcha','StoreManagersController@captcha')
+                ->name('api.manager.captcha');
 
             // 购买门店经理
             $api->post('manager','StoreManagersController@store')

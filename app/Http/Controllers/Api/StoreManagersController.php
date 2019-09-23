@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\Api\StoreManagerRequest;
 use App\Models\Order;
 use App\Models\User;
+use App\Transformers\OrderTransformer;
 use Gregwar\Captcha\CaptchaBuilder;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class StoreManagersController extends Controller
 
     public function store(StoreManagerRequest $request)
     {
-        $verifyData = \Cache::get($request->verification_key);
+        $verifyData = \Cache::get($request->captcha_key);
 
         // 只用普通用户能购买
         // TODO 酱紫玩家可以升级
@@ -29,23 +30,21 @@ class StoreManagersController extends Controller
         }
 
         // 返回401
-        if (!hash_equals($verifyData['code'], $request->verification_code)) {
+        if (!hash_equals($verifyData['code'], $request->captcha_code)) {
             return $this->response->errorUnauthorized('验证码错误');
         }
 
         // 创建订单
         $order = new Order([
-            'user_id'        => $this->user()->id,
             'total_amount'   => $this->price,
             'pay_status'     => Order::PAY_STATUS_UNPAID,
             'type'           => Order::ORDER_TYPE_MEMBER
         ]);
-
+        $order->user_id = $this->user()->id;
         $order->save();
 
         // 返回订单详情
-        return $this->response->item($order, new TopicTransformer())
-            ->setStatusCode(201);
+        return $this->response->item($order, new OrderTransformer())->setStatusCode(201);
     }
 
     /**
@@ -55,10 +54,9 @@ class StoreManagersController extends Controller
      */
     public function captcha(CaptchaBuilder $captchaBuilder){
         $key         = 'manager-captcha-'.str_random(15);
-        $phone       = $this->user()->phone;
         $captcha     = $captchaBuilder->build();
         $expiredAt   = now()->addMinutes(2);
-        \Cache::put($key, ['phone' => $phone, 'code' => $captcha->getPhrase()], $expiredAt);
+        \Cache::put($key, ['code' => $captcha->getPhrase()], $expiredAt);
 
         return $this->response->array([
             'captcha_key'           => $key,
