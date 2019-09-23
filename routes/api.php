@@ -54,6 +54,10 @@ $api->version('v1', [
             $api->get('user', 'UsersController@me')
                 ->name('api.user.show');
 
+            // 用户二维码
+            $api->get('user/captcha','CaptchasController@store')
+                ->name('api.user.captcha');
+
             // 购买门店经理
             $api->post('manager','StoreManagersController@store')
                 ->name('api.manager.store');
