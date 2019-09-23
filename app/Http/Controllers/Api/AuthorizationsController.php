@@ -13,6 +13,7 @@ class AuthorizationsController extends Controller
         $credentials['phone']    = $request->phone;
         $credentials['password'] = $request->password;
 
+        // 获取登录token
         if(!$token = \Auth::guard('api')->attempt($credentials)){
             return $this->response->errorUnauthorized('用户名或密码错误');
         }

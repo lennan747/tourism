@@ -2,12 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="58858052-7ab5-4264-9373-ef3f1c05184b" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
 <<<<<<< HEAD
 =======
       <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/AuthorizationsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/AuthorizationsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/UsersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/UsersController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Transformers/UserTransformer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Transformers/UserTransformer.php" afterDir="false" />
+>>>>>>> eadb75cddbae010911239f4c7c849eca6a820b1b
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
 >>>>>>> f1fe50b6823e1f144ed4bd9883cacfa86e1aebb8
     </list>
@@ -25,6 +31,7 @@
     <leaf>
       <file pinned="false" current-in-tab="true">
 <<<<<<< HEAD
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/UsersController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="84">
@@ -35,6 +42,15 @@
             <state relative-caret-position="516">
               <caret line="23" column="45" selection-start-line="23" selection-start-column="45" selection-end-line="23" selection-end-column="45" />
 >>>>>>> f1fe50b6823e1f144ed4bd9883cacfa86e1aebb8
+=======
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/CaptchasController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="12" column="7" lean-forward="true" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+              <folding>
+                <element signature="e#44#72#0#PHP" expanded="true" />
+              </folding>
+>>>>>>> eadb75cddbae010911239f4c7c849eca6a820b1b
             </state>
           </provider>
         </entry>
@@ -82,6 +98,7 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/UsersController.php" />
         <option value="$PROJECT_DIR$/config/auth.php" />
         <option value="$PROJECT_DIR$/config/api.php" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/app/Http/Requests/Api/UserRequest.php" />
         <option value="$PROJECT_DIR$/app/Http/Requests/Api/AuthorizationRequest.php" />
         <option value="$PROJECT_DIR$/app/Models/User.php" />
@@ -91,6 +108,8 @@
         <option value="$PROJECT_DIR$/database/migrations/2019_09_15_205523_add_parent_tree_money_to_users.php" />
         <option value="$PROJECT_DIR$/.env" />
 =======
+=======
+>>>>>>> eadb75cddbae010911239f4c7c849eca6a820b1b
         <option value="$PROJECT_DIR$/app/Http/Requests/Api/AuthorizationRequest.php" />
         <option value="$PROJECT_DIR$/app/Http/Requests/Api/CaptchaRequest.php" />
         <option value="$PROJECT_DIR$/app/Http/Requests/Api/UserRequest.php" />
@@ -102,7 +121,6 @@
         <option value="$PROJECT_DIR$/config/admin.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_09_20_225157_create_orders_table.php" />
         <option value="$PROJECT_DIR$/app/Models/Order.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/UsersController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/CaptchasController.php" />
         <option value="$PROJECT_DIR$/app/Http/Requests/Api/StoreManagerRequest.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_09_15_205523_add_parent_tree_money_to_users.php" />
@@ -110,6 +128,8 @@
         <option value="$PROJECT_DIR$/app/Models/User.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/StoreManagersController.php" />
         <option value="$PROJECT_DIR$/app/Transformers/UserTransformer.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/UsersController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/AuthorizationsController.php" />
         <option value="$PROJECT_DIR$/routes/api.php" />
 >>>>>>> f1fe50b6823e1f144ed4bd9883cacfa86e1aebb8
       </list>
@@ -374,8 +394,13 @@
       <workItem from="1568979287111" duration="718000" />
       <workItem from="1568984349863" duration="873000" />
       <workItem from="1568985746796" duration="759000" />
+<<<<<<< HEAD
       <workItem from="1568987605359" duration="9524000" />
 >>>>>>> f1fe50b6823e1f144ed4bd9883cacfa86e1aebb8
+=======
+      <workItem from="1568987605359" duration="9931000" />
+      <workItem from="1569144399204" duration="9720000" />
+>>>>>>> eadb75cddbae010911239f4c7c849eca6a820b1b
     </task>
     <task id="LOCAL-00001" summary="修改配置">
       <created>1568301149370</created>
@@ -412,6 +437,7 @@
       <option name="project" value="LOCAL" />
       <updated>1568303106086</updated>
     </task>
+<<<<<<< HEAD
     <option name="localTasksCounter" value="6" />
     <servers />
   </component>
@@ -421,6 +447,27 @@
 =======
     <option name="totallyTimeSpent" value="52387000" />
 >>>>>>> f1fe50b6823e1f144ed4bd9883cacfa86e1aebb8
+=======
+    <task id="LOCAL-00006" summary="安装redis库">
+      <created>1568733781695</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1568733781695</updated>
+    </task>
+    <task id="LOCAL-00007" summary="1.订单数据表，订单模型&#10;2.购买门店经理&#10;3.transformer数据转换成">
+      <created>1568998149074</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1568998149074</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="62514000" />
+>>>>>>> eadb75cddbae010911239f4c7c849eca6a820b1b
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -481,6 +528,9 @@
       </map>
     </option>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> eadb75cddbae010911239f4c7c849eca6a820b1b
     <option name="RECENT_FILTERS">
       <map>
         <entry key="Branch">
@@ -495,8 +545,11 @@
         </entry>
       </map>
     </option>
+<<<<<<< HEAD
 =======
 >>>>>>> f1fe50b6823e1f144ed4bd9883cacfa86e1aebb8
+=======
+>>>>>>> eadb75cddbae010911239f4c7c849eca6a820b1b
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="修改配置" />
@@ -504,7 +557,13 @@
     <MESSAGE value="生成用户骨架" />
     <MESSAGE value="安装dingoAPI" />
     <MESSAGE value="安装短信服务，添加节流，获取图片验证码" />
+<<<<<<< HEAD
     <option name="LAST_COMMIT_MESSAGE" value="安装短信服务，添加节流，获取图片验证码" />
+=======
+    <MESSAGE value="安装redis库" />
+    <MESSAGE value="1.订单数据表，订单模型&#10;2.购买门店经理&#10;3.transformer数据转换成" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.订单数据表，订单模型&#10;2.购买门店经理&#10;3.transformer数据转换成" />
+>>>>>>> eadb75cddbae010911239f4c7c849eca6a820b1b
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.editorconfig">
@@ -631,6 +690,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/Controller.php">
 >>>>>>> f1fe50b6823e1f144ed4bd9883cacfa86e1aebb8
       <provider selected="true" editor-type-id="text-editor">
@@ -648,6 +708,8 @@
         <state relative-caret-position="189">
           <caret line="7" column="55" selection-start-line="7" selection-start-column="55" selection-end-line="7" selection-end-column="55" />
 =======
+=======
+>>>>>>> eadb75cddbae010911239f4c7c849eca6a820b1b
     <entry file="file://$PROJECT_DIR$/storage/logs/laravel-2019-09-15.log" />
     <entry file="file://$PROJECT_DIR$/storage/logs/laravel-2019-09-17.log" />
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/VerificationCodesController.php">
@@ -656,16 +718,6 @@
           <caret line="23" column="50" lean-forward="true" selection-start-line="23" selection-start-column="50" selection-end-line="23" selection-end-column="50" />
           <folding>
             <element signature="e#44#94#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/AuthorizationsController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="17" column="9" lean-forward="true" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
-          <folding>
-            <element signature="e#44#91#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -702,14 +754,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/storage/logs/laravel-2019-09-18.log">
-      <provider selected="true" editor-type-id="LogFileEditorProvider" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/storage/logs/laravel-2019-09-20.log">
-      <provider selected="true" editor-type-id="LogFileEditorProvider">
-        <state relative-caret-position="-65" />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/storage/logs/laravel-2019-09-18.log" />
+    <entry file="file://$PROJECT_DIR$/storage/logs/laravel-2019-09-20.log" />
     <entry file="file://$PROJECT_DIR$/app/Observers/UserObserver.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="486">
@@ -780,16 +826,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/CaptchasController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="12" column="7" lean-forward="true" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
-          <folding>
-            <element signature="e#44#72#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Requests/Api/AuthorizationRequest.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="594">
@@ -804,6 +840,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/UsersController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="810">
@@ -815,6 +852,8 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> eadb75cddbae010911239f4c7c849eca6a820b1b
     <entry file="file://$PROJECT_DIR$/app/Models/Order.php">
       <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
@@ -873,11 +912,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Requests/Api/StoreManagerRequest.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/Controller.php">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="756">
           <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
 >>>>>>> f1fe50b6823e1f144ed4bd9883cacfa86e1aebb8
+=======
+        <state relative-caret-position="270">
+          <caret line="10" column="6" lean-forward="true" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
+          <folding>
+            <element signature="e#44#72#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Transformers/OrderTransformer.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/AuthorizationsController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="20" column="8" lean-forward="true" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
+          <folding>
+            <element signature="e#44#91#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Transformers/UserTransformer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="7" column="6" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="6" />
+          <folding>
+            <element signature="e#36#56#0#PHP" expanded="true" />
+          </folding>
+>>>>>>> eadb75cddbae010911239f4c7c849eca6a820b1b
         </state>
       </provider>
     </entry>
@@ -898,42 +968,64 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/UsersController.php">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="84">
           <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
 =======
         <state relative-caret-position="3">
           <caret line="31" column="27" lean-forward="true" selection-start-line="31" selection-start-column="27" selection-end-line="31" selection-end-column="27" />
+=======
+        <state relative-caret-position="459">
+          <caret line="21" column="50" lean-forward="true" selection-start-line="21" selection-start-column="50" selection-end-line="21" selection-end-column="50" />
+>>>>>>> eadb75cddbae010911239f4c7c849eca6a820b1b
           <folding>
             <element signature="e#30#39#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/StoreManagersController.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/UsersController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="810">
-          <caret line="48" column="1" selection-start-line="48" selection-start-column="1" selection-end-line="48" selection-end-column="1" />
+        <state relative-caret-position="327">
+          <caret line="27" column="30" lean-forward="true" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
           <folding>
-            <element signature="e#44#90#0#PHP" expanded="true" />
+            <element signature="e#44#82#0#PHP" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Transformers/UserTransformer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="16" column="42" lean-forward="true" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
-          <folding>
-            <element signature="e#36#56#0#PHP" expanded="true" />
-          </folding>
->>>>>>> f1fe50b6823e1f144ed4bd9883cacfa86e1aebb8
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/api.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="516">
-          <caret line="23" column="45" selection-start-line="23" selection-start-column="45" selection-end-line="23" selection-end-column="45" />
+        <state relative-caret-position="783">
+          <caret line="57" column="31" selection-start-line="57" selection-start-column="24" selection-end-line="57" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Requests/Api/StoreManagerRequest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="15" column="18" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/StoreManagersController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="14" column="25" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="25" />
+          <folding>
+            <element signature="e#44#90#0#PHP" expanded="true" />
+          </folding>
+>>>>>>> f1fe50b6823e1f144ed4bd9883cacfa86e1aebb8
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/CaptchasController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="12" column="7" lean-forward="true" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+          <folding>
+            <element signature="e#44#72#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
