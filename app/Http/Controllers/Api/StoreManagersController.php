@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\Api\StoreManagerRequest;
 use App\Models\Order;
 use App\Models\User;
+use Gregwar\Captcha\CaptchaBuilder;
 use Illuminate\Http\Request;
 
 class StoreManagersController extends Controller
@@ -45,5 +46,24 @@ class StoreManagersController extends Controller
         // 返回订单详情
         return $this->response->item($order, new TopicTransformer())
             ->setStatusCode(201);
+    }
+
+    /**
+     * 用户操作验证码
+     * @param CaptchaBuilder $captchaBuilder
+     * @return mixed
+     */
+    public function captcha(CaptchaBuilder $captchaBuilder){
+        $key         = 'manager-captcha-'.str_random(15);
+        $phone       = $this->user()->phone;
+        $captcha     = $captchaBuilder->build();
+        $expiredAt   = now()->addMinutes(2);
+        \Cache::put($key, ['phone' => $phone, 'code' => $captcha->getPhrase()], $expiredAt);
+
+        return $this->response->array([
+            'captcha_key'           => $key,
+            'expired_at'            => $expiredAt->toDateTimeString(),
+            'captcha_image_content' => $captcha->inline()
+        ])->setStatusCode(201);
     }
 }
