@@ -7,23 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     // 退款状态
-    const REFUND_STATUS_PENDING = 'pending';
-    const REFUND_STATUS_APPLIED = 'applied';
+    const REFUND_STATUS_PENDING    = 'pending';
+    const REFUND_STATUS_APPLIED    = 'applied';
     const REFUND_STATUS_PROCESSING = 'processing';
-    const REFUND_STATUS_SUCCESS = 'success';
-    const REFUND_STATUS_FAILED = 'failed';
+    const REFUND_STATUS_SUCCESS    = 'success';
+    const REFUND_STATUS_FAILED     = 'failed';
 
     // 发货状态
-    const SHIP_STATUS_PENDING = 'pending';
+    const SHIP_STATUS_PENDING   = 'pending';
     const SHIP_STATUS_DELIVERED = 'delivered';
-    const SHIP_STATUS_RECEIVED = 'received';
+    const SHIP_STATUS_RECEIVED  = 'received';
 
     // 支付状态
     const PAY_STATUS_UNPAID = 'unpaid';
-    const PAY_STATUS_PAID = 'paid';
+    const PAY_STATUS_PAID   = 'paid';
 
     // 订单类型
-    const ORDER_TYPE_MEMBER = 'member';
+    const ORDER_TYPE_MEMBER  = 'member';
     const ORDER_TYPE_TOURISM = 'tourism';
     const ORDER_TYPE_PRODUCT = 'product';
 
@@ -123,5 +123,9 @@ class Order extends Model
         \Log::warning('find order no failed');
 
         return false;
+    }
+
+    public function user(){
+        return $this->belongsTo(Order::class);
     }
 }

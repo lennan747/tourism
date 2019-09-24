@@ -49,13 +49,13 @@ $api->version('v1', [
             $api->get('user', 'UsersController@me')
                 ->name('api.user.show');
 
-            // 购买前的验证码
-            $api->get('manager/captcha','StoreManagersController@captcha')
-                ->name('api.manager.captcha');
+            // 订单前的验证码
+            $api->get('order/captcha','OrdersController@captcha')
+                ->name('api.order.captcha');
 
             // 购买门店经理
-            $api->post('manager','StoreManagersController@store')
-                ->name('api.manager.store');
+            $api->post('order/store-member','OrdersController@storeMember')
+                ->name('api.order.store.member');
         });
 
     });

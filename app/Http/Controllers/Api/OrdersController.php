@@ -2,27 +2,31 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\Api\StoreManagerRequest;
+use App\Http\Requests\Api\StoreMemberRequest;
+
 use App\Models\Order;
 use App\Models\User;
+
 use App\Transformers\OrderTransformer;
+
 use Gregwar\Captcha\CaptchaBuilder;
+
 use Illuminate\Http\Request;
 
-class StoreManagersController extends Controller
+class OrdersController extends Controller
 {
-    //
-    protected $price = 3980;
-
-    public function store(StoreManagerRequest $request)
-    {
+    // 门店经理订单
+    public function storeMember(StoreMemberRequest $request){
         $verifyData = \Cache::get($request->captcha_key);
+        $type = $request->type === 'store' ? 'store' : 'player';
 
         // 只用普通用户能购买
-        // TODO 酱紫玩家可以升级
+        // TODO
         if($this->user()->identity !== User::USER_IDENTITY_ORDINARY){
             return $this->response->error('请勿重复购买', 422);
         }
+
+        // 检查当前用户门店订单是否存在
 
         // 422
         if (!$verifyData) {
@@ -36,10 +40,12 @@ class StoreManagersController extends Controller
 
         // 创建订单
         $order = new Order([
-            'total_amount'   => $this->price,
-            'pay_status'     => Order::PAY_STATUS_UNPAID,
-            'type'           => Order::ORDER_TYPE_MEMBER
+            'total_amount'   => User::$memberPriceMap[$type],  // 订单总价
+            'pay_status'     => Order::PAY_STATUS_UNPAID,      // 订单状态，未支付
+            'type'           => Order::ORDER_TYPE_MEMBER       // 订单类型,购买会员订单
         ]);
+
+        //关联用户
         $order->user_id = $this->user()->id;
         $order->save();
 
@@ -48,12 +54,12 @@ class StoreManagersController extends Controller
     }
 
     /**
-     * 用户操作验证码
+     * 订单前验证码
      * @param CaptchaBuilder $captchaBuilder
      * @return mixed
      */
     public function captcha(CaptchaBuilder $captchaBuilder){
-        $key         = 'manager-captcha-'.str_random(15);
+        $key         = 'order-captcha-'.str_random(15);
         $captcha     = $captchaBuilder->build();
         $expiredAt   = now()->addMinutes(2);
         \Cache::put($key, ['code' => $captcha->getPhrase()], $expiredAt);

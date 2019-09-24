@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
-class StoreManagerRequest extends FormRequest
+class StoreMemberRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,8 @@ class StoreManagerRequest extends FormRequest
         return [
             //
             'phone' => [
-                'captcha_key' => 'required|string',
+                'type'         => 'required|string',
+                'captcha_key'  => 'required|string',
                 'captcha_code' => 'required|string',
             ]
         ];
