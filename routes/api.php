@@ -49,6 +49,10 @@ $api->version('v1', [
             $api->get('user', 'UsersController@me')
                 ->name('api.user.show');
 
+            // 用户会员购买订单信息
+            $api->get('user/member/order/info','UsersController@memberOrderInfo')
+                ->name('api.user.member.order.info');
+
             // 订单前的验证码
             $api->get('order/captcha','OrdersController@captcha')
                 ->name('api.order.captcha');

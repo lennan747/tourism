@@ -26,12 +26,6 @@ class User extends Authenticatable implements JWTSubject
         self::USER_IDENTITY_PLAYER        => '酱紫玩家'
     ];
 
-    // 两种会员的价格
-    public static $memberPriceMap = [
-        self::USER_IDENTITY_STORE  => 3980,
-        self::USER_IDENTITY_PLAYER => 999
-    ];
-
     /**
      * The attributes that are mass assignable.
      *

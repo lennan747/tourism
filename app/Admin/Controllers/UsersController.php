@@ -26,20 +26,22 @@ class UsersController extends AdminController
     {
         $grid = new Grid(new User);
 
-        $grid->column('id', __('Id'));
-        $grid->column('name', __('Name'));
-        $grid->column('identity', __('Identity'));
-        $grid->column('phone', __('Phone'));
-        $grid->column('email', __('Email'));
-        $grid->column('email_verified_at', __('Email verified at'));
-        $grid->column('password', __('Password'));
-        $grid->column('remember_token', __('Remember token'));
-        $grid->column('parent_id', __('Parent id'));
-        $grid->column('tree', __('Tree'));
-        $grid->column('money', __('Money'));
-        $grid->column('avatar', __('Avatar'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        //$grid->column('id', __('Id'));
+        //$grid->column('name', __('Name'));
+        $grid->column('phone','用户手机号');
+        $grid->column('identity', '用户等级')->display(function (){
+            return User::$userIdentityMap[$this->identity];
+        });
+        //$grid->column('email', __('Email'));
+        //$grid->column('email_verified_at', __('Email verified at'));
+        //$grid->column('password', __('Password'));
+        //$grid->column('remember_token', __('Remember token'));
+        //$grid->column('parent_id', __('Parent id'));
+        //$grid->column('tree', __('Tree'));
+        $grid->column('money', '用户金币');
+        //$grid->column('avatar', __('Avatar'));
+        $grid->column('created_at', '注册时间');
+        $grid->column('updated_at', '更新时间');
 
         return $grid;
     }

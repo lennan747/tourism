@@ -18,7 +18,8 @@ class OrdersController extends Controller
     // 门店经理订单
     public function storeMember(StoreMemberRequest $request){
         $verifyData = \Cache::get($request->captcha_key);
-        $type = $request->type === 'store' ? 'store' : 'player';
+        // 订单类型
+        $type = $request->type == 'store' ? Order::ORDER_TYPE_STORE : Order::ORDER_TYPE_PLAYER;
 
         // 只用普通用户能购买
         // TODO
@@ -26,8 +27,13 @@ class OrdersController extends Controller
             return $this->response->error('请勿重复购买', 422);
         }
 
-        // 检查当前用户门店订单是否存在
-
+        // 检查当前用户门店订单是否存
+        if($this->user()->order()
+            ->where([['type', '=', Order::ORDER_TYPE_STORE]])
+            ->orWhere([['type', '=', Order::ORDER_TYPE_PLAYER]])
+            ->exists()){
+            return $this->response->error('请勿重复购买', 422);
+        }
         // 422
         if (!$verifyData) {
             return $this->response->error('验证码已失效', 422);
@@ -40,9 +46,9 @@ class OrdersController extends Controller
 
         // 创建订单
         $order = new Order([
-            'total_amount'   => User::$memberPriceMap[$type],  // 订单总价
-            'pay_status'     => Order::PAY_STATUS_UNPAID,      // 订单状态，未支付
-            'type'           => Order::ORDER_TYPE_MEMBER       // 订单类型,购买会员订单
+            'total_amount'   => Order::$memberPriceMap[$type],  // 订单总价
+            'pay_status'     => Order::PAY_STATUS_UNPAID,       // 订单状态，未支付
+            'type'           => $type                           // 订单类型,购买会员订单
         ]);
 
         //关联用户

@@ -12,8 +12,8 @@ class OrderTransformer extends TransformerAbstract
         return [
             'id'             => $order->id,
             'no'             => $order->no,
-            'pay_status'     => $order->pay_status,             // 用户身份信息
-            'paid_at'        => $order->paid_at,                // 用户余额
+            'pay_status'     => $order->pay_status,
+            'paid_at'        => $order->paid_at,
             'type'           => $order->type,
             'created_at'     => (string) $order->created_at,
             'updated_at'     => (string) $order->updated_at,

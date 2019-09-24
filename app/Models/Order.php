@@ -23,7 +23,8 @@ class Order extends Model
     const PAY_STATUS_PAID   = 'paid';
 
     // 订单类型
-    const ORDER_TYPE_MEMBER  = 'member';
+    const ORDER_TYPE_STORE  = 'store';
+    const ORDER_TYPE_PLAYER = 'player';
     const ORDER_TYPE_TOURISM = 'tourism';
     const ORDER_TYPE_PRODUCT = 'product';
 
@@ -47,9 +48,16 @@ class Order extends Model
     ];
 
     public static $orderTypeMap = [
-        self::ORDER_TYPE_MEMBER    => '购买会员',
-        self::ORDER_TYPE_TOURISM   => '购买旅游',
-        self::ORDER_TYPE_PRODUCT   => '购买商品'
+        self::ORDER_TYPE_STORE      => '购买门店经理',
+        self::ORDER_TYPE_PLAYER     => '购买酱紫玩家',
+        self::ORDER_TYPE_TOURISM    => '购买旅游',
+        self::ORDER_TYPE_PRODUCT    => '购买商品'
+    ];
+
+    // 两种会员的价格
+    public static $memberPriceMap = [
+        self::ORDER_TYPE_STORE  => 3980,
+        self::ORDER_TYPE_PLAYER => 999
     ];
 
     protected $fillable = [
@@ -126,6 +134,6 @@ class Order extends Model
     }
 
     public function user(){
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(User::class);
     }
 }
