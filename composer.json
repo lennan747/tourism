@@ -17,6 +17,7 @@
         "fideloper/proxy": "^4.0",
         "gregwar/captcha": "^1.1",
         "jxlwqq/material-ui": "^1.0",
+        "laravel-admin-ext/simplemde": "^1.0",
         "laravel/framework": "5.8.*",
         "laravel/horizon": "~3.1",
         "laravel/tinker": "^1.0",

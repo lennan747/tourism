@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Transformers\OrderTransformer;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
@@ -50,10 +51,11 @@ class UsersController extends Controller
      */
     public function memberOrderInfo()
     {
-        // TODO sql错误
         $order = $this->user()->order()
-            ->where([['type', '=', Order::ORDER_TYPE_STORE]])
-            ->orWhere([['type', '=', Order::ORDER_TYPE_PLAYER]])
+            ->where(function ($query){
+                $query->where('type','=',Order::ORDER_TYPE_STORE)
+                    ->orWhere('type','=',Order::ORDER_TYPE_PLAYER);
+            })
             ->first();
         return $order ? $this->response->item($order, new OrderTransformer()) : null;
     }

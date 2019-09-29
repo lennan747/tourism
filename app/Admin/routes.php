@@ -23,4 +23,11 @@ Route::group([
     // 订单审核
     $router->post('orders/{order}/review', 'OrdersController@review')->name('admin.orders.review');
     /***** 订单资源 结束 ******/
+
+    // 商品
+    $router->get('products', 'ProductsController@index');
+    $router->get('products/create', 'ProductsController@create');
+    $router->post('products', 'ProductsController@store');
+    $router->get('products/{id}/edit', 'ProductsController@edit');
+    $router->put('products/{id}', 'ProductsController@update');
 });
