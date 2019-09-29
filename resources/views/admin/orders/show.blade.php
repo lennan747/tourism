@@ -11,51 +11,85 @@
         <table class="table table-bordered">
             <tbody>
             <tr>
-                <td>买家电话号：</td>
-                <td>{{ $order->user->phone }}</td>
+                <td>订单金额：</td>
+                <td>￥{{ $order->total_amount }}</td>
                 <td>支付时间：</td>
-                <td></td>
+                <td>{{ $order->paid_at ? $order->paid_at : '0000-00-00' }}</td>
+                <td>订单类型：</td>
+                <td>{{ \App\Models\Order::$orderTypeMap[$order->type] }}</td>
+                <td>支付状态：</td>
+                <td>{{ \App\Models\Order::$payStatusMap[$order->pay_status] }}</td>
             </tr>
             <tr>
-                <td>订单金额：</td>
-                <td colspan="3">￥{{ $order->total_amount }}</td>
+                <td colspan="1">买家电话号：</td>
+                <td colspan="7">{{ $order->user->phone }}</td>
             </tr>
+            <!-- 未支付状态 -->
             @if($order->pay_status === \App\Models\Order::PAY_STATUS_UNPAID)
                 <tr>
-                    <td colspan="2">
-                        <form action="{{ route('admin.orders.review',[$order->id]) }}" method="post" class="form-inline">
-                            {{ csrf_field() }}
-                            <div class="form-group {{ $errors->has('payment_method') ? 'has-error' : '' }}">
-                                <label for="payment_method" class="control-label">支付方式</label>
-                                <select class="form-control select2-search--inline" name="payment_method" id="">
-                                    <option value="WeChatPay">微信支付</option>
-                                    <option value="AliPay">支付宝支付</option>
-                                    <option value="BankCaryPay">银行卡支付</option>
-                                    <option value="CashPay">现金支付</option>
-                                    <option value="OrderPay">其他支付</option>
-                                </select>
-                                @if($errors->has('payment_method'))
-                                    @foreach($errors->get('payment_method') as $msg)
-                                        <span class="help-block">{{ $msg }}</span>
-                                    @endforeach
-                                @endif
+                    <td colspan="8">
+                        <form action="{{ route('admin.orders.review',['id' => $order->id]) }}" method="post">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <select class="form-inline col-md-12 payment_method {{ $errors->has('remark') ? 'has-error' : '' }}"
+                                            data-placeholder="选择支付方式"
+                                            id=""
+                                    >
+                                        <option value="WeChatPay">微信支付</option>
+                                        <option value="AliPay">支付宝支付</option>
+                                        <option value="BankCaryPay">银行卡支付</option>
+                                        <option value="CashPay">现金支付</option>
+                                        <option value="OrderPay">其他支付</option>
+                                    </select>
+                                    <input type="hidden" name="payment_method" value="WeChatPay" placeholder="选择支付方式">
+                                    @if($errors->has('payment_method'))
+                                        @foreach($errors->get('payment_method') as $msg)
+                                            <span class="help-block">{{ $msg }}</span>
+                                        @endforeach
+                                    @endif
+                                </div>
+
+                                <div class="col-md-2">
+                                    <input class="form-inline col-md-12 form-inline {{ $errors->has('remark') ? 'has-error' : '' }}"
+                                           type="text"
+                                           name="remark"
+                                           placeholder="订单备注"
+                                           style="line-height: 28px;"
+                                    >
+                                    @if($errors->has('remark'))
+                                        @foreach($errors->get('remark') as $msg)
+                                            <span class="help-block">{{ $msg }}</span>
+                                        @endforeach
+                                    @endif
+                                </div>
+
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn" style="background-color: #00bcd4; color: #f0f0f0;">审核</button>
+                                </div>
                             </div>
-                            <div class="form-group {{ $errors->has('remark') ? 'has-error' : '' }}">
-                                <label for="remark" class="control-label">订单备注</label>
-                                <textarea name="remark" id="remark" cols="100" placeholder="订单备注"></textarea>
-                                @if($errors->has('remark'))
-                                    @foreach($errors->get('remark') as $msg)
-                                        <span class="help-block">{{ $msg }}</span>
-                                    @endforeach
-                                @endif
-                            </div>
-                            <button type="submit" class="btn-app btn-dropbox" id="ship-btn">发货</button>
                         </form>
                     </td>
                 </tr>
             @else
+                <tr>
+                    <td colspan="1">订单备注：</td>
+                    <td colspan="7">{{ $order->remark }}</td>
+                </tr>
             @endif
             </tbody>
         </table>
     </div>
 </div>
+
+
+<script>
+    $(function () {
+        const payment_method = $('.payment_method');
+        payment_method.select2();
+        payment_method.on('change',function () {
+            console.log(111);
+            $('input[name="payment_method"]').val(payment_method.val());
+        });
+    });
+</script>

@@ -50,6 +50,7 @@ class UsersController extends Controller
      */
     public function memberOrderInfo()
     {
+        // TODO sql错误
         $order = $this->user()->order()
             ->where([['type', '=', Order::ORDER_TYPE_STORE]])
             ->orWhere([['type', '=', Order::ORDER_TYPE_PLAYER]])
