@@ -112,6 +112,8 @@
       <path value="$PROJECT_DIR$/vendor/jxlwqq/material-ui" />
       <path value="$PROJECT_DIR$/vendor/liyu/dingo-serializer-switch" />
       <path value="$PROJECT_DIR$/vendor/laravel-admin-ext/simplemde" />
+      <path value="$PROJECT_DIR$/vendor/laravel-admin-ext/wang-editor" />
+      <path value="$PROJECT_DIR$/vendor/overtrue/laravel-query-logger" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

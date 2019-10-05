@@ -3,14 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\StoreMemberRequest;
-
 use App\Models\Order;
 use App\Models\User;
-
 use App\Transformers\OrderTransformer;
-
 use Gregwar\Captcha\CaptchaBuilder;
-
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -29,9 +25,10 @@ class OrdersController extends Controller
 
         // 检查当前用户门店订单是否存
         if($this->user()->order()
-            ->where([['type', '=', Order::ORDER_TYPE_STORE]])
-            ->orWhere([['type', '=', Order::ORDER_TYPE_PLAYER]])
-            ->exists()){
+            ->where(function ($query){
+                $query->where('type','=',Order::ORDER_TYPE_STORE)
+                    ->orWhere('type','=',Order::ORDER_TYPE_PLAYER);
+            })->exists()){
             return $this->response->error('请勿重复购买', 422);
         }
         // 422

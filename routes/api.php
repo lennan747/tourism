@@ -43,6 +43,13 @@ $api->version('v1', [
         $api->delete('authorizations/current', 'AuthorizationsController@destroy')
             ->name('api.authorizations.destroy');
 
+        // 推荐商品列表
+        $api->get('products/recommend', 'ProductsController@recommend')
+            ->name('api.products.recommend');
+
+        $api->get('products/show','ProductsController@show')
+            ->name('api.products.show');
+
         // 需要 token 验证的接口
         $api->group(['middleware' => 'api.auth'], function($api) {
             // 当前登录用户信息
