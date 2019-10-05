@@ -2,11 +2,13 @@
 
 namespace App\Admin\Controllers;
 
+use App\Handlers\ImageUploadHandler;
 use App\Models\Product;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Http\Request;
 
 class ProductsController extends AdminController
 {
@@ -27,7 +29,9 @@ class ProductsController extends AdminController
         $grid = new Grid(new Product);
 
         $grid->column('id', __('ID'))->sortable();
-        $grid->column('type', '商品类型');
+        $grid->column('type', '商品类型')->display(function ($value) {
+            return $value == 'tourism' ? '旅游商品' : '普通商品';
+        });
         $grid->column('title', '商品名称');
         $grid->column('on_sale', '已上架')->display(function ($value) {
             return $value ? '是' : '否';
@@ -96,14 +100,21 @@ class ProductsController extends AdminController
     {
         $form = new Form(new Product);
 
-        $form->column(1/2,function ($form){
-            $form->text('type', '类型')->rules('required');
+        $form->column(1/2, function ($form) {
+            //$form->text('type', '类型')->rules('required');
+            $form->select('type', '类型')->options(['tourism' => '旅游商品'])->rules('required');
             $form->text('title','商品标题')->rules('required');
-            $form->text('description', '商品描述');
+            $form->text('description', '商品描述')->rules('required');
             $form->radio('on_sale','上架')->options(['1' => '是', '0'=> '否'])->default('0');
-            $form->image('index_image', '首页缩略图')->rules('nullable|image')->removable();
-            $form->multipleImage('image', '商品图片')->rules('required|image')->removable()->sortable();
-            // 直接添加一对多的关联模型
+            $form->radio('on_recommend','推荐')->options(['1' => '是', '0'=> '否'])->default('0');
+            $form->image('index_image', '首页缩略图')->rules('nullable|image')->removable()->uniqueName()->move('/images/products/'.date("Ym/d", time()))->rules('required');
+            $form->multipleImage('image', '商品图片')->rules('required|image')->removable()->uniqueName()->move('/images/products/'.date("Ym/d", time()))->sortable();
+            $form->editor('product_detail', '商品详情');
+            $form->editor('cost_detail', '费用详情');
+            $form->editor('journey_detail','行程计划');
+        });
+        // style="background-image:url(http://tourism.cam/uploads/images/products/201910/05/1.jpg);">
+        $form->column(1/2, function ($form) {
             $form->hasMany('skus', 'SKU 列表', function (Form\NestedForm $form) {
                 $form->text('title', 'SKU 名称')->rules('required');
                 $form->text('description', 'SKU 描述')->rules('required');
@@ -112,17 +123,29 @@ class ProductsController extends AdminController
             });
         });
 
-        $form->column(1/2, function ($form) {
-            $form->editor('product_detail', '商品详情');
-            $form->editor('cost_detail', '费用详情');
-            $form->editor('journey_detail','行程计划');
-        });
-
 
         // 定义事件回调，当模型即将保存时会触发这个回调
         $form->saving(function (Form $form) {
             $form->model()->price = collect($form->input('skus'))->where(Form::REMOVE_FLAG_NAME, 0)->min('price') ?: 0;
         });
         return $form;
+    }
+
+
+    public function upload(Request $request,ImageUploadHandler $uploader)
+    {
+        $urls = [];
+
+        foreach ($request->file() as $file) {
+            $result = $uploader->save($file, 'products', 'p');
+            if ($result) {
+                $urls[] = $result['path'];
+            }
+        }
+
+        return response()->json([
+            "errno" => 0,
+            "data"  => $urls,
+        ]);
     }
 }

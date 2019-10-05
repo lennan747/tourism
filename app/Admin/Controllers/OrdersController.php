@@ -95,7 +95,7 @@ class OrdersController extends Controller
         $grid->column('paid_at', '支付时间');
         $grid->column('payment_method', '支付方式');
         $grid->column('closed', '是否关闭')->display(function (){
-            return $this->closed ? '进行中' : '已关闭';
+            return $this->closed ? '已关闭' : '进行中';
         });
         $grid->column('type', '订单类型')->display(function (){
             return Order::$orderTypeMap[$this->type];
