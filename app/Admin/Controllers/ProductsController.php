@@ -96,24 +96,26 @@ class ProductsController extends AdminController
     {
         $form = new Form(new Product);
 
-        $form->text('type', '类型')->rules('required');
-        $form->text('title','商品标题')->rules('required');
-        $form->text('description', '商品描述');
-        $form->radio('on_sale','上架')->options(['1' => '是', '0'=> '否'])->default('0');
-        $form->image('index_image', '首页缩略图')->rules('nullable|image')->removable();
-        $form->multipleImage('image', '商品图片')->rules('required|image')->removable()->sortable();
-        // 直接添加一对多的关联模型
-        $form->hasMany('skus', 'SKU 列表', function (Form\NestedForm $form) {
-            $form->text('title', 'SKU 名称')->rules('required');
-            $form->text('description', 'SKU 描述')->rules('required');
-            $form->text('price', '单价')->rules('required|numeric|min:0.01');
-            $form->text('stock', '剩余库存')->rules('required|integer|min:0');
+        $form->column(1/2,function ($form){
+            $form->text('type', '类型')->rules('required');
+            $form->text('title','商品标题')->rules('required');
+            $form->text('description', '商品描述');
+            $form->radio('on_sale','上架')->options(['1' => '是', '0'=> '否'])->default('0');
+            $form->image('index_image', '首页缩略图')->rules('nullable|image')->removable();
+            $form->multipleImage('image', '商品图片')->rules('required|image')->removable()->sortable();
+            // 直接添加一对多的关联模型
+            $form->hasMany('skus', 'SKU 列表', function (Form\NestedForm $form) {
+                $form->text('title', 'SKU 名称')->rules('required');
+                $form->text('description', 'SKU 描述')->rules('required');
+                $form->text('price', '单价')->rules('required|numeric|min:0.01');
+                $form->text('stock', '剩余库存')->rules('required|integer|min:0');
+            });
         });
 
-        $form->fieldset('详情', function (Form $form) {
-            $form->simplemde('product_detail', '商品详情')->height(50);
-            $form->simplemde('cost_detail', '费用详情')->height(50);
-            $form->simplemde('journey_detail','行程计划')->height(50);
+        $form->column(1/2, function ($form) {
+            $form->editor('product_detail', '商品详情');
+            $form->editor('cost_detail', '费用详情');
+            $form->editor('journey_detail','行程计划');
         });
 
 
