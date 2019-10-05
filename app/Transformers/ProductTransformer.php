@@ -6,12 +6,16 @@ use League\Fractal\TransformerAbstract;
 
 class ProductTransformer extends TransformerAbstract
 {
+
+    protected $availableIncludes = ['sku'];
+
     public function transform(Product $product)
     {
         $images = [];
         foreach ($product->image as $value){
             $images[]['url'] = env('APP_URL').'/uploads/'.$value;
         }
+
         return [
             'id'                    => $product->id,
             'title'                 => $product->title,
@@ -29,5 +33,10 @@ class ProductTransformer extends TransformerAbstract
             'created_at'            => (string) $product->created_at,
             'updated_at'            => (string) $product->updated_at,
         ];
+    }
+
+    public function includeSku(Product $product)
+    {
+        return $this->collection($product->skus()->get(), new ProductSkuTransformer());
     }
 }

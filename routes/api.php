@@ -17,7 +17,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api',
-    'middleware' => ['cors','serializer:array'],
+    'middleware' => ['cors','serializer:array','bindings'],
 ], function($api) {
     $api->group([
         'middleware' => 'api.throttle',
@@ -47,7 +47,7 @@ $api->version('v1', [
         $api->get('products/recommend', 'ProductsController@recommend')
             ->name('api.products.recommend');
 
-        $api->get('products/show','ProductsController@show')
+        $api->get('products/{product}','ProductsController@show')
             ->name('api.products.show');
 
         // 需要 token 验证的接口
@@ -67,6 +67,9 @@ $api->version('v1', [
             // 购买门店经理
             $api->post('order/store-member','OrdersController@storeMember')
                 ->name('api.order.store.member');
+            // 购买旅游产品
+            $api->post('order/store-product','OrdersController@storeProduct')
+                ->name('api.order.store.product');
         });
 
     });

@@ -9,7 +9,7 @@ use phpDocumentor\Reflection\Types\Null_;
 
 class ProductsController extends Controller
 {
-    //
+    // 推荐商品列表
     public function recommend(Request $request, Product $products)
     {
         $query = $products->query();
@@ -24,16 +24,12 @@ class ProductsController extends Controller
         return $products ? $this->response->paginator($products, new ProductTransformer()) : null;
     }
 
-    public function show(Request $request, Product $product)
+    // 商品详情
+    public function show(Product $product)
     {
-        $query = $product->query();
-
-        $query->where([
-            ['on_sale', '=' ,true],
-            ['id', '=', $request->id]
-        ]);
-
-        $product = $query->first();
+        if(!$product->on_sale){
+            return $this->response->error('商品已下架', 422);
+        }
 
         return $product ? $this->response->item($product,new ProductTransformer()) : Null;
     }
