@@ -38,6 +38,16 @@ class Registered implements ShouldQueue
         } else {
             $parent = \DB::table('users')->where('id', $this->user->parent_id)->first();
             $tree = $parent->tree.','.$this->user->id;
+
+            // 添加到团队
+            $team_arr = explode(',',substr($parent->tree,2));
+            rsort($team_arr);
+            $data = [];
+            foreach ($team_arr as $key => $value)
+            {
+                $data[] = ['top_id' => $value, 'player_id' => $this->user->id, 'depth' => $key + 1, 'role' => $this->user->identity];
+            }
+            \DB::table('teams')->insert($data);
         }
         // 更新当前用户的tree字段
         \DB::table('users')->where('id', $this->user->id)->update(['tree' => $tree]);

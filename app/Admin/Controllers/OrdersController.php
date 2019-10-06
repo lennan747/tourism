@@ -28,6 +28,20 @@ class OrdersController extends Controller
      */
     public function index(Content $content)
     {
+
+//        $teams = \DB::table('teams')
+//            ->leftJoin('users','teams.top_id','=','users.id')
+//            ->select('teams.*', 'users.identity', 'users.tree')
+//            ->where('teams.player_id','7')
+//            ->get();
+
+        $top_teams = \DB::table('teams')->whereIn('top_id',[0,1,2,4,7])->get()->groupBy('top_id')->toArray();
+        dd($top_teams);
+        $teams = \DB::table('users')->whereIn('id',[0,1,2,4,7])->orderBy('id','desc')->get();
+        dd($teams);
+//        $a = \DB::table('users')->where('id','7');
+//        $a->update(['money' => 10.00]);
+//        dd($a->get());
         return $content
             ->header('订单列表')
             ->body($this->grid());

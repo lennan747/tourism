@@ -24,6 +24,22 @@
                 <td colspan="1">买家电话号：</td>
                 <td colspan="7">{{ $order->user->phone }}</td>
             </tr>
+
+            @if($order->type === \App\Models\Order::ORDER_TYPE_TOURISM)
+                <tr>
+                    <td rowspan="{{ $order->items->count() + 1 }}">商品列表</td>
+                    <td colspan="3">商品名称</td>
+                    <td colspan="2">单价</td>
+                    <td colspan="2">数量</td>
+                </tr>
+                @foreach($order->items as $item)
+                    <tr>
+                        <td colspan="3">{{ $item->product->title }} {{ $item->productSku->title }}</td>
+                        <td colspan="2">￥{{ $item->price }}</td>
+                        <td colspan="2">{{ $item->amount }}</td>
+                    </tr>
+                @endforeach
+            @endif
             <!-- 未支付状态 -->
             @if($order->pay_status === \App\Models\Order::PAY_STATUS_UNPAID)
                 <tr>
@@ -75,6 +91,10 @@
                 <tr>
                     <td colspan="1">订单备注：</td>
                     <td colspan="7">{{ $order->remark }}</td>
+                </tr>
+                <tr>
+                    <td colspan="1">支付方式：</td>
+                    <td colspan="7">{{ $order->payment_method }}</td>
                 </tr>
             @endif
             </tbody>
