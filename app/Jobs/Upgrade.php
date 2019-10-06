@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Order;
+use Illuminate\Support\Arr;
 
 class Upgrade implements ShouldQueue
 {
@@ -41,47 +42,23 @@ class Upgrade implements ShouldQueue
             return;
         }
 
-        // 门店经理订单，订单用户一定为普通用户
-        if($this->order->type == Order::ORDER_TYPE_STORE){
-            // 获取所属所有团队
-            $teams = \DB::table('users')->whereIn('id',$this->order->user()->tree)->orderBy('id','desc')->get();
-            // 获取所属所有团队队长的团队
-            $top_teams = \DB::table('teams')->whereIn('top_id',$this->order->user()->tree)->get()->groupBy('top_id')->toArray();
-            // 更新自己的角色
-            \DB::table('users')->where('id',$this->order->user_id)->update(['identity' => User::USER_IDENTITY_STORE]);
-
-            // 计算直属老大的
-            foreach ($teams as $team)
-            {
-                // 直接上一级 门店经理
-                if($team->id == $this->order->user()->parent_id){
-                    // 门店经理 1000 m >= 5 sj
-                    $top_teams[$team->id];
-                }
-
-            }
-            // 更新直属团队
-            // 门店经理，
-            // 按顺序更新其他团队
-
-
-            // 以顶级分组，深度升序，依次计算
-            // 深度1 为直属团队
-            $top_teams_order = $top_teams->groupBy('top_id')->toArray();
-            // 深度1 为直属团队
-            $top_teams_order[$this->order->user()->parent_id];
-            // 计算直属老大的
-            foreach ($teams as $team)
-            {
-                if($team->id == $this->order->user_id){
-                    \DB::table('users')->where('id',$this->order->user_id)->update(['identity' => User::USER_IDENTITY_STORE]);
-                    continue;
-                }
-
-                // 直接上一级 门店经理
-                if($team->id == $this->order->user()->parent_id){
-                    // 门店经理 1000 m >= 5 sj
-                    //$top_teams
+        // 获取所属所有团队队长
+        $teams = \DB::table('users')->whereIn('id',$this->order->user()->tree)->orderBy('id','desc')->get();
+        //            // 获取所属所有团队队长的团队
+//            $top_teams = \DB::table('teams')->whereIn('top_id',$this->order->user()->tree)->get()->groupBy('top_id')->toArray();
+        // 门店经理订单，订单用户一定为普通用户， 更新自己的角色 users,teams
+        if($this->order->type == Order::ORDER_TYPE_STORE) {
+            \DB::table('users')->where('id', $this->order->user_id)->update(['identity' => User::USER_IDENTITY_STORE]);
+            \DB::table('teams')->where('player_id', $this->order->user_id)->update(['role' => User::USER_IDENTITY_STORE]);
+            foreach ($teams as $team) {
+                // 直接上一级 门店经理 1000 m >= 5 sj
+                if ($team->id == $this->order->user()->parent_id) {
+                    $m = 0;
+                    // 获取上一级的所有
+                    if ($m >= 5) {  // 升级为部门经理
+                        \DB::table('users')->where('id', $team->id)->update(['identity' => User::USER_IDENTITY_DEPARTMENT]);
+                        \DB::table('teams')->where('player_id', $team->id)->update(['role' => User::USER_IDENTITY_DEPARTMENT]);
+                    }
                 }
 
             }
