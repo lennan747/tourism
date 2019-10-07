@@ -9,8 +9,10 @@ use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\MessageBag;
+use App\Jobs\Upgrade;
 
 class OrdersController extends Controller
 {
@@ -28,20 +30,6 @@ class OrdersController extends Controller
      */
     public function index(Content $content)
     {
-
-//        $teams = \DB::table('teams')
-//            ->leftJoin('users','teams.top_id','=','users.id')
-//            ->select('teams.*', 'users.identity', 'users.tree')
-//            ->where('teams.player_id','7')
-//            ->get();
-
-        $top_teams = \DB::table('teams')->whereIn('top_id',[0,1,2,4,7])->get()->groupBy('top_id')->toArray();
-        dd($top_teams);
-        $teams = \DB::table('users')->whereIn('id',[0,1,2,4,7])->orderBy('id','desc')->get();
-        dd($teams);
-//        $a = \DB::table('users')->where('id','7');
-//        $a->update(['money' => 10.00]);
-//        dd($a->get());
         return $content
             ->header('订单列表')
             ->body($this->grid());
@@ -49,6 +37,13 @@ class OrdersController extends Controller
 
     public function show(Order $order, Content $content)
     {
+        $players = \DB::table('teams')->where([['top_id', 17], ['depth', 1],['role','ordinary']])->pluck('player_id');
+
+        $total_sales = \DB::table('orders')->select(\DB::raw('SUM(total_amount) as total_sales'))
+            ->whereIn('user_id',[17,16])
+            ->where([['pay_status',Order::PAY_STATUS_PAID]])
+            ->value('total_sales');
+        dd($total_sales);
         return $content
             ->header('查看订单')
             // body 方法可以接受 Laravel 的视图作为参数
@@ -57,15 +52,16 @@ class OrdersController extends Controller
 
 
     //  审核未支付订单
-    public function review(Order $order, Request $request){
+    public function review(Order $order, Request $request)
+    {
 
         // 验证
         $data = $this->validate($request, [
-            'payment_method'  => ['required'],
-            'remark'          => ['nullable'],
+            'payment_method' => ['required'],
+            'remark' => ['nullable'],
         ], [], [
             'payment_method' => '支付方式',
-            'remark'         => '订单备注',
+            'remark' => '订单备注',
         ]);
 
         // 判断当前订单发货状态是否为未发货
@@ -75,17 +71,18 @@ class OrdersController extends Controller
 
         // 将订单发货状态改为已发货，并存入物流信息
         $order->update([
-            'pay_status'     => Order::PAY_STATUS_PAID,
+            'pay_status' => Order::PAY_STATUS_PAID,
             'payment_method' => $data['payment_method'],
-            'remark'         => $data['remark'],
-            'paid_at'        => Carbon::now(),
-            'closed'         => true
+            'remark' => $data['remark'],
+            'paid_at' => Carbon::now(),
+            'closed' => true
         ]);
 
+        $this->dispatch(new Upgrade($order, config('app.order_ttl')));
         // 返回上一页
         $success = new MessageBag([
             'title' => '订单审核',
-            'message' => '订单'.$order->no.'通过',
+            'message' => '订单' . $order->no . '通过',
         ]);
         return back()->with(compact('success'));
     }
@@ -101,17 +98,17 @@ class OrdersController extends Controller
         $grid = new Grid(new Order);
 
         $grid->column('no', '订单号');
-        $grid->column('user.phone','下单用户手机号');
-        $grid->column('total_amount','订单金额');
-        $grid->column('pay_status', '支付状态')->display(function (){
+        $grid->column('user.phone', '下单用户手机号');
+        $grid->column('total_amount', '订单金额');
+        $grid->column('pay_status', '支付状态')->display(function () {
             return Order::$payStatusMap[$this->pay_status];
         });
         $grid->column('paid_at', '支付时间');
         $grid->column('payment_method', '支付方式');
-        $grid->column('closed', '是否关闭')->display(function (){
+        $grid->column('closed', '是否关闭')->display(function () {
             return $this->closed ? '已关闭' : '进行中';
         });
-        $grid->column('type', '订单类型')->display(function (){
+        $grid->column('type', '订单类型')->display(function () {
             return Order::$orderTypeMap[$this->type];
         });
         $grid->column('created_at', '下单时间');

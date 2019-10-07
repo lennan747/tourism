@@ -118,7 +118,8 @@ class ProductsController extends AdminController
             $form->hasMany('skus', 'SKU 列表', function (Form\NestedForm $form) {
                 $form->text('title', 'SKU 名称')->rules('required');
                 $form->text('description', 'SKU 描述')->rules('required');
-                $form->text('price', '单价')->rules('required|numeric|min:0.01');
+                $form->decimal('price', '单价')->rules('required|numeric|min:0.01');
+                $form->decimal('profit', '利润')->rules('required|numeric|min:0.01');
                 $form->text('stock', '剩余库存')->rules('required|integer|min:0');
             });
         });

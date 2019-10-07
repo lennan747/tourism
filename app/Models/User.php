@@ -84,4 +84,16 @@ class User extends Authenticatable implements JWTSubject
     public function order(){
         return $this->hasMany(Order::class);
     }
+
+    // 上级
+    public function teamTop()
+    {
+        return $this->hasMany(Team::class, 'player_id','id');
+    }
+
+    // 队员
+    public function teamPlayer()
+    {
+        return $this->hasMany(Team::class, 'top_id','id');
+    }
 }
