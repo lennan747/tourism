@@ -43,6 +43,7 @@ class OrdersController extends Controller
             // 写入数据库
             $order->save();
             $totalAmount = 0;
+            $totalProfit = 0;
             $items       = $request->input('items');
             // 遍历用户提交的 SKU
             foreach ($items as $data) {
@@ -51,15 +52,17 @@ class OrdersController extends Controller
                 $item = $order->items()->make([
                     'amount'         => $data['amount'],
                     'price'          => $sku->price,
+                    'profit'         => $sku->profit ? $sku->profit : 0
                 ]);
                 $item->product()->associate($sku->product_id);
                 $item->productSku()->associate($sku);
                 $item->save();
                 $totalAmount += $sku->price * $data['amount'];
+                $totalProfit += $sku->profit * $data['amount'];
             }
 
             // 更新订单总金额
-            $order->update(['total_amount' => $totalAmount]);
+            $order->update(['total_amount' => $totalAmount,'total_profit' => $totalProfit]);
 
             // 返回订单详情
             return $this->response->item($order, new OrderTransformer())->setStatusCode(201);

@@ -21,22 +21,30 @@
                 <td>{{ \App\Models\Order::$payStatusMap[$order->pay_status] }}</td>
             </tr>
             <tr>
+                <td colspan="1">订单利润：</td>
+                <td colspan="1">￥{{ $order->total_profit }}</td>
                 <td colspan="1">买家电话号：</td>
-                <td colspan="7">{{ $order->user->phone }}</td>
+                <td colspan="5">{{ $order->user->phone }}</td>
             </tr>
 
             @if($order->type === \App\Models\Order::ORDER_TYPE_TOURISM)
                 <tr>
-                    <td rowspan="{{ $order->items->count() + 1 }}">商品列表</td>
-                    <td colspan="3">商品名称</td>
-                    <td colspan="2">单价</td>
-                    <td colspan="2">数量</td>
+                    <td rowspan="{{ $order->items->count() + 1 }}"  colspan="1">商品列表</td>
+                    <td colspan="2">商品名称</td>
+                    <td colspan="1">单价</td>
+                    <td colspan="1">利润</td>
+                    <td colspan="1">数量</td>
+                    <td colspan="1">单价 ✖ 数量</td>
+                    <td colspan="1">利润 ✖ 数量</td>
                 </tr>
                 @foreach($order->items as $item)
                     <tr>
-                        <td colspan="3">{{ $item->product->title }} {{ $item->productSku->title }}</td>
-                        <td colspan="2">￥{{ $item->price }}</td>
-                        <td colspan="2">{{ $item->amount }}</td>
+                        <td colspan="2">{{ $item->product->title }} {{ $item->productSku->title }}</td>
+                        <td colspan="1">￥{{ $item->price }}</td>
+                        <td colspan="1">￥{{ $item->profit }}</td>
+                        <td colspan="1">{{ $item->amount }}</td>
+                        <td colspan="1">￥{{ $item->price * $item->amount }}</td>
+                        <td colspan="1">￥{{ $item->profit * $item->amount }}</td>
                     </tr>
                 @endforeach
             @endif

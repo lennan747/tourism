@@ -37,13 +37,13 @@ class OrdersController extends Controller
 
     public function show(Order $order, Content $content)
     {
-        $players = \DB::table('teams')->where([['top_id', 17], ['depth', 1],['role','ordinary']])->pluck('player_id');
-
-        $total_sales = \DB::table('orders')->select(\DB::raw('SUM(total_amount) as total_sales'))
-            ->whereIn('user_id',[17,16])
-            ->where([['pay_status',Order::PAY_STATUS_PAID]])
-            ->value('total_sales');
-        dd($total_sales);
+//        $players = \DB::table('teams')->where([['top_id', 17], ['depth', 1],['role','ordinary']])->pluck('player_id');
+//
+//        $total_sales = \DB::table('orders')->select(\DB::raw('SUM(total_amount) as total_sales'))
+//            ->whereIn('user_id',[17,16])
+//            ->where([['pay_status',Order::PAY_STATUS_PAID]])
+//            ->value('total_sales');
+//        dd($total_sales);
         return $content
             ->header('查看订单')
             // body 方法可以接受 Laravel 的视图作为参数

@@ -64,6 +64,7 @@ class Order extends Model
         'no',
         'address',
         'total_amount',
+        'total_profit',
         'remark',
         'pay_status',
         'paid_at',

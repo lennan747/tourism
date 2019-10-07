@@ -102,10 +102,15 @@ class Upgrade implements ShouldQueue
                             continue;
                         }
 
-                        // 上级如果是酱紫玩家
+                        // 上级如果是运营总监
                         if ($top->identity == User::USER_IDENTITY_DIRECTOR) {
                             $top->money = $top->money + 1680.00;
                             \DB::table('users')->where('id', $top->id)->update(['identity' => $top->identity, 'money' =>  $top->money]);
+                            continue;
+                        }
+
+                        // 如果上级是酱紫玩家
+                        if($top->identity == User::USER_IDENTITY_PLAYER){
                             continue;
                         }
 
@@ -117,6 +122,11 @@ class Upgrade implements ShouldQueue
 
                     // 上级如果是门店经理
                     if($top->identity == User::USER_IDENTITY_STORE){
+                        continue;
+                    }
+
+                    // 如果上级是酱紫玩家
+                    if($top->identity == User::USER_IDENTITY_PLAYER){
                         continue;
                     }
 
@@ -138,7 +148,7 @@ class Upgrade implements ShouldQueue
                         continue;
                     }
 
-                    // 上级如果是酱紫玩家
+                    // 上级如果是运营总监
                     if ($top->identity == User::USER_IDENTITY_DIRECTOR) {
                         $top->money = $top->money + 480.00;
                         \DB::table('users')->where('id', $top->id)->update(['identity' => $top->identity, 'money' =>  $top->money]);
@@ -149,7 +159,14 @@ class Upgrade implements ShouldQueue
             }
             // 购买酱紫玩家
             if($this->order->type == Order::ORDER_TYPE_PLAYER){
-
+                // 如果没有上一级
+                if($user->parent_id == 0){
+                    return;
+                }
+                $top = \DB::table('users')->where('id',$user->parent_id)->first();
+                // 直接找到上一级，给与600
+                $top->money = $top->money + 600.00;
+                \DB::table('users')->where('id', $top->id)->update(['money' =>  $top->money]);
             }
             // 购买普通商品
             if($this->order->type == Order::ORDER_TYPE_TOURISM){
@@ -159,6 +176,7 @@ class Upgrade implements ShouldQueue
                 }
                 foreach ($tree as $v) {
                     $top = \DB::table('users')->where('id',$v)->first();
+                    // 直属上一级
                     if ($v == $user->parent_id) {
                         // 上级如果是门店经理
                         if ($top->identity == User::USER_IDENTITY_STORE) {
@@ -176,31 +194,29 @@ class Upgrade implements ShouldQueue
                                 \DB::table('teams')->where('player_id', $top->id)->update(['role' => User::USER_IDENTITY_DEPARTMENT]);
                             }
                             // 奖励上级 该商品的80%
-                            $top->money = $top->money + 1000.00;
+
+                            $top->money = $top->money + $this->order->total_profit * 0.8;
                             \DB::table('users')->where('id', $top->id)->update(['identity' => $top->identity, 'money' =>  $top->money]);
                             continue;
                         }
                         // 上级如果是部门经理
                         if ($top->identity == User::USER_IDENTITY_DEPARTMENT) {
-                            // 团队会员人数
-                            $count1 = \DB::table('teams')->select(\DB::raw('count(*) as count'))->where([['top_id', $top->id], ['role', '!=', User::USER_IDENTITY_ORDINARY]])->value('count');
-                            // 团队部门经理人数
-                            $count2 = \DB::table('teams')->select(\DB::raw('count(*) as count'))->where([['top_id', $top->id], ['role', User::USER_IDENTITY_DEPARTMENT]])->value('count');
-                            // 如果上级满足升级条件
-                            if ($count1 >= 30 && $count2 >= 5) {
-                                $top->identity = User::USER_IDENTITY_DIRECTOR;
-                                // 更新团队
-                                \DB::table('teams')->where('player_id', $top->id)->update(['role' => User::USER_IDENTITY_DIRECTOR]);
-                            }
                             // 奖励上级
-                            $top->money = $top->money + 1000.00;
+                            $top->money = $top->money + $this->order->total_profit * 0.8;
+                            \DB::table('users')->where('id', $top->id)->update(['identity' => $top->identity, 'money' =>  $top->money]);
+                            continue;
+                        }
+
+                        // 上级如果是运营总监
+                        if ($top->identity == User::USER_IDENTITY_DIRECTOR) {
+                            $top->money = $top->money + $this->order->total_profit * 0.8;
                             \DB::table('users')->where('id', $top->id)->update(['identity' => $top->identity, 'money' =>  $top->money]);
                             continue;
                         }
 
                         // 上级如果是酱紫玩家
-                        if ($top->identity == User::USER_IDENTITY_DIRECTOR) {
-                            $top->money = $top->money + 1680.00;
+                        if ($top->identity == User::USER_IDENTITY_PLAYER) {
+                            $top->money = $top->money + $this->order->total_profit * 0.7;
                             \DB::table('users')->where('id', $top->id)->update(['identity' => $top->identity, 'money' =>  $top->money]);
                             continue;
                         }
@@ -209,6 +225,31 @@ class Upgrade implements ShouldQueue
                         if($top->identity == User::USER_IDENTITY_ORDINARY){
                             continue;
                         }
+                    }
+
+                    // 上级如果是门店经理
+                    if($top->identity == User::USER_IDENTITY_STORE){
+                        continue;
+                    }
+
+                    // 上级如果是酱紫玩家
+                    if ($top->identity == User::USER_IDENTITY_PLAYER) {
+                        continue;
+                    }
+
+                    // 上级如果是部门经理
+                    if ($top->identity == User::USER_IDENTITY_DEPARTMENT) {
+                        // 奖励上级
+                        $top->money = $top->money + $this->order->total_profit * 0.05;
+                        \DB::table('users')->where('id', $top->id)->update(['identity' => $top->identity, 'money' =>  $top->money]);
+                        continue;
+                    }
+
+                    // 上级如果是运营总监
+                    if ($top->identity == User::USER_IDENTITY_DIRECTOR) {
+                        $top->money = $top->money + $this->order->total_profit * 0.1;
+                        \DB::table('users')->where('id', $top->id)->update(['identity' => $top->identity, 'money' =>  $top->money]);
+                        continue;
                     }
                 }
             }
