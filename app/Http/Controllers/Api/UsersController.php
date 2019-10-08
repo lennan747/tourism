@@ -7,8 +7,6 @@ use App\Models\Order;
 use App\Models\User;
 use App\Transformers\OrderTransformer;
 use App\Transformers\UserTransformer;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {

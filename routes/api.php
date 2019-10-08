@@ -42,13 +42,15 @@ $api->version('v1', [
         // 删除token
         $api->delete('authorizations/current', 'AuthorizationsController@destroy')
             ->name('api.authorizations.destroy');
-
         // 推荐商品列表
         $api->get('products/recommend', 'ProductsController@recommend')
             ->name('api.products.recommend');
-
+        // 商品详情
         $api->get('products/{product}','ProductsController@show')
             ->name('api.products.show');
+        // app 基本配置
+        $api->get('config','ConfigController@index')
+            ->name('api.configs.index');
 
         // 需要 token 验证的接口
         $api->group(['middleware' => 'api.auth'], function($api) {
@@ -70,6 +72,9 @@ $api->version('v1', [
             // 购买旅游产品
             $api->post('order/store-product','OrdersController@storeProduct')
                 ->name('api.order.store.product');
+
+            // 获取用户团队
+            $api->get('team','TeamsController@index');
         });
 
     });

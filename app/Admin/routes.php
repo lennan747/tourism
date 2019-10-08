@@ -31,4 +31,15 @@ Route::group([
     $router->get('products/{id}/edit', 'ProductsController@edit');
     $router->put('products/{id}', 'ProductsController@update');
     $router->post('products/upload', 'ProductsController@upload');
+
+    // 站点配置
+    //$router->resource('configs', ConfigsController::class);
+    $router->get('configs','ConfigsController@index');
+    $router->get('configs/create','ConfigsController@create');
+    $router->post('configs','ConfigsController@store');
+    $router->put('configs/{config}','ConfigsController@update');
+    $router->get('configs/site','ConfigsController@site');
+    $router->get('configs/wechat','ConfigsController@wechat');
+    $router->get('configs/manager','ConfigsController@manager');
+    $router->get('configs/player','ConfigsController@player');
 });
