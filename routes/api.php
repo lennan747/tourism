@@ -46,9 +46,12 @@ $api->version('v1', [
         // 推荐商品列表
         $api->get('products/recommend', 'ProductsController@recommend')
             ->name('api.products.recommend');
-
+        // 商品详情
         $api->get('products/{product}','ProductsController@show')
             ->name('api.products.show');
+        // app 基本配置
+        $api->get('config','ConfigController@index')
+            ->name('api.configs.index');
 
         // 需要 token 验证的接口
         $api->group(['middleware' => 'api.auth'], function($api) {

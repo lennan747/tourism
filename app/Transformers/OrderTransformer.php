@@ -19,4 +19,5 @@ class OrderTransformer extends TransformerAbstract
             'updated_at'     => (string) $order->updated_at,
         ];
     }
+
 }

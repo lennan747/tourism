@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Models\Product;
 use App\Transformers\ProductTransformer;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\Null_;
 
 class ProductsController extends Controller
 {
