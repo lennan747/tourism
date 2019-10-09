@@ -22,6 +22,9 @@ Route::group([
     $router->get('orders/{order}','OrdersController@show')->name('admin.orders.show');
     // 订单审核
     $router->post('orders/{order}/review', 'OrdersController@review')->name('admin.orders.review');
+
+    // 订单分成日志
+    $router->resource('order-commission-logs', OrderCommissionLogsController::class);
     /***** 订单资源 结束 ******/
 
     // 商品

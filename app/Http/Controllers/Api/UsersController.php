@@ -27,9 +27,10 @@ class UsersController extends Controller
 
         // 创建用户
         $user = User::create([
-            'parent_id' => isset($request->parent_id) ? $request->parent_id : 0,
-            'phone' => $verifyData['phone'],
-            'password' => bcrypt($request->password),
+            'parent_id'  => isset($request->parent_id) ? $request->parent_id : 0,
+            'phone'      => $verifyData['phone'],
+            'name'       => $verifyData['phone'],
+            'password'   => bcrypt($request->password),
         ]);
 
         // 清除验证码缓存
