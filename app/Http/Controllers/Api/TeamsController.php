@@ -20,21 +20,31 @@ class TeamsController extends Controller
             $user->identity == User::USER_IDENTITY_DIRECTOR ||
             $user->identity == User::USER_IDENTITY_PLAYER){
 
+            // 团队
             $teams = Team::query()->select()
                 ->where('top_id',$user->id)
-                ->leftJoin('users','player_id','id')->get();
+                ->leftJoin('users','player_id','id')->get()->keyBy('player_id');
 
-            $orders = Order::query()
-                ->whereIn('user_id',$teams->pluck('player_id'))->get();
+
+            // 团队订单
+            $orders = Order::query()->whereIn('user_id',$teams->pluck('player_id'))->get()->keyBy('id');
+            $orders->transform(function ($item) use ($teams){
+                $item['user_name'] = $teams[$item->user_id]['name'];
+                return $item;
+            });
 
             // 团队奖励
             $commissions = OrderCommissionLog::query()->where([
                 ['commission_user_id',$user->id],
             ])->get();
+            $commissions->transform(function ($item) use ($orders){
+                $item['no'] = $orders[$item->order_id]['no'];
+                return $item;
+            });
 
             $data = [
-                'teams'       => $teams->groupBy('role')->toArray(),
-                'orders'      => $orders->groupBy('type')->toArray(),
+                'teams'        => $teams->groupBy('role')->toArray(),
+                'orders'       => $orders->groupBy('type')->toArray(),
                 'commissions'  => $commissions->groupBy('type')->toArray()
             ];
             return $this->response->array($data)->setStatusCode(200);
