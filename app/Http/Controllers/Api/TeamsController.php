@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\InviteCode;
 use App\Models\Order;
 use App\Models\OrderCommissionLog;
 use App\Models\Team;
@@ -42,11 +43,21 @@ class TeamsController extends Controller
                 return $item;
             });
 
+            // 二维码
+            $invite_code = InviteCode::query()->where([['user_id',$user->id],['type','team']])->first();
+            if(!$invite_code){
+                $invite_code = new InviteCode(['type' => 'team']);
+                $invite_code->user()->associate($user);
+                $invite_code->save();
+            }
+
             $data = [
-                'teams'        => $teams->groupBy('role')->toArray(),
-                'orders'       => $orders->groupBy('type')->toArray(),
-                'commissions'  => $commissions->groupBy('type')->toArray()
+                'teams'            => $teams->groupBy('role')->toArray(),
+                'orders'           => $orders->groupBy('type')->toArray(),
+                'commissions'      => $commissions->groupBy('type')->toArray(),
+                'invite_code'      => $invite_code
             ];
+
             return $this->response->array($data)->setStatusCode(200);
         }
 

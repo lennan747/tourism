@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\UserRequest;
+use App\Models\InviteCode;
 use App\Models\Order;
 use App\Models\User;
 use App\Transformers\OrderTransformer;
@@ -25,9 +26,15 @@ class UsersController extends Controller
             return $this->response->errorUnauthorized('验证码错误');
         }
 
+        // 邀请码
+        $parent_id = 0;
+        if($request->invite_code){
+            $parent_id = InviteCode::query()->where('code',$request->invite_code)->value('user_id');
+        }
+
         // 创建用户
         $user = User::create([
-            'parent_id'  => isset($request->parent_id) ? $request->parent_id : 0,
+            'parent_id'  => isset($parent_id) ? $parent_id : 0,
             'phone'      => $verifyData['phone'],
             'name'       => $verifyData['phone'],
             'password'   => bcrypt($request->password),
@@ -57,5 +64,18 @@ class UsersController extends Controller
             })
             ->first();
         return $order ? $this->response->item($order, new OrderTransformer()) : null;
+    }
+
+    public function tourismOrderIndex()
+    {
+        $order = $this->user()->order()
+            ->where('type',Order::ORDER_TYPE_TOURISM)
+            ->first();
+        return $order ? $this->response->collection($order, new OrderTransformer()) : null;
+    }
+
+    public function tourismOrderShow()
+    {
+
     }
 }

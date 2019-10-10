@@ -42,6 +42,12 @@ $api->version('v1', [
         // 删除token
         $api->delete('authorizations/current', 'AuthorizationsController@destroy')
             ->name('api.authorizations.destroy');
+    });
+    $api->group([
+        'middleware' => 'api.throttle',
+        'limit' => config('api.rate_limits.access.limit'),
+        'expires' => config('api.rate_limits.access.expires'),
+    ], function($api) {
         // 推荐商品列表
         $api->get('products/recommend', 'ProductsController@recommend')
             ->name('api.products.recommend');
@@ -61,6 +67,9 @@ $api->version('v1', [
             // 用户会员购买订单信息
             $api->get('user/member/order/info','UsersController@memberOrderInfo')
                 ->name('api.user.member.order.info');
+            // 用户旅游订单信息
+            $api->get('user/tourism/order','UsersController@tourismOrderIndex')
+                ->name('api.user.tourism.order.index');
 
             // 订单前的验证码
             $api->get('order/captcha','OrdersController@captcha')

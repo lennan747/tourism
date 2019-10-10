@@ -6,6 +6,7 @@ use App\Models\Image;
 use App\Handlers\ImageUploadHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ImageRequest;
+use Illuminate\Support\Facades\Storage;
 
 
 class ImagesController extends Controller
@@ -15,9 +16,6 @@ class ImagesController extends Controller
         $size = $request->type == 'avatar' ? 362 : 1024;
 
         $result = $uploader->save($request->image, str_plural($request->type), '');
-
-
-
 
         $urls = [];
 
