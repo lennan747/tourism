@@ -15,13 +15,13 @@ class Config extends Model
         'extra',
     ];
 
-    public function getValueAttribute($value)
-    {
-        return array_values(json_decode($value, true) ?: []);
-    }
+//    public function getValueAttribute($value)
+//    {
+//        return array_values(json_decode($value, true) ?: []);
+//    }
 
-    public function setValueAttribute($value)
-    {
-        $this->attributes['value'] = json_encode(array_values($value));
-    }
+//    public function setValueAttribute($value)
+//    {
+//        $this->attributes['value'] = json_encode(array_values($value));
+//    }
 }

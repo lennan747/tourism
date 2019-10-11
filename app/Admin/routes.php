@@ -45,4 +45,7 @@ Route::group([
     $router->get('configs/wechat','ConfigsController@wechat');
     $router->get('configs/manager','ConfigsController@manager');
     $router->get('configs/player','ConfigsController@player');
+    $router->get('configs/wechat_rate','ConfigsController@wechat_rate');
+    $router->get('configs/alipay_rate','ConfigsController@alipay_rate');
+    $router->get('configs/bank_rate','ConfigsController@bank_rate');
 });
