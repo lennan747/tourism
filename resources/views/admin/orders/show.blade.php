@@ -49,7 +49,7 @@
                 @endforeach
             @endif
             <!-- 未支付状态 -->
-            @if($order->pay_status === \App\Models\Order::PAY_STATUS_UNPAID)
+            @if($order->pay_status === \App\Models\Order::PAY_STATUS_UNPAID && !$order->closed)
                 <tr>
                     <td colspan="8">
                         <form action="{{ route('admin.orders.review',['id' => $order->id]) }}" method="post">
@@ -89,11 +89,31 @@
                                 </div>
 
                                 <div class="col-md-2">
+                                    <select class="form-inline col-md-12 review {{ $errors->has('review') ? 'has-error' : '' }}"
+                                            data-placeholder="通过"
+                                    >
+                                        <option value="true">通过</option>
+                                        <option value="false">不通过</option>
+                                    </select>
+                                    <input type="hidden" name="review" value="true" placeholder="通过">
+                                    @if($errors->has('review'))
+                                        @foreach($errors->get('review') as $msg)
+                                            <span class="help-block">{{ $msg }}</span>
+                                        @endforeach
+                                    @endif
+                                </div>
+
+                                <div class="col-md-2">
                                     <button type="submit" class="btn" style="background-color: #00bcd4; color: #f0f0f0;">审核</button>
                                 </div>
                             </div>
                         </form>
                     </td>
+                </tr>
+            @elseif($order->pay_status === \App\Models\Order::PAY_STATUS_UNPAID && $order->closed)
+                <tr>
+                    <td colspan="1">不通过理由：</td>
+                    <td colspan="7">{{ $order->remark }}</td>
                 </tr>
             @else
                 <tr>
@@ -118,6 +138,13 @@
         payment_method.on('change',function () {
             console.log(111);
             $('input[name="payment_method"]').val(payment_method.val());
+        });
+
+        const review = $('.review');
+        review.select2();
+        review.on('change',function () {
+            console.log(111);
+            $('input[name="review"]').val(review.val());
         });
     });
 </script>

@@ -65,17 +65,4 @@ class UsersController extends Controller
             ->first();
         return $order ? $this->response->item($order, new OrderTransformer()) : null;
     }
-
-    public function tourismOrderIndex()
-    {
-        $order = $this->user()->order()
-            ->where('type',Order::ORDER_TYPE_TOURISM)
-            ->first();
-        return $order ? $this->response->collection($order, new OrderTransformer()) : null;
-    }
-
-    public function tourismOrderShow()
-    {
-
-    }
 }

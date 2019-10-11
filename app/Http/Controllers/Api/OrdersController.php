@@ -28,15 +28,15 @@ class OrdersController extends Controller
         if (!hash_equals($verifyData['code'], $request->captcha_code)) {
             return $this->response->errorUnauthorized('验证码错误');
         }
-        $user  = $request->user();
+        $user = $request->user();
         // 获取商品信息
-        $order = DB::transaction(function () use ($user, $request){
+        $order = DB::transaction(function () use ($user, $request) {
             // 创建一个订单
-            $order   = new Order([
-                'remark'         => $request->input('remark'),
-                'pay_status'     => Order::PAY_STATUS_UNPAID,         // 订单状态，未支付
-                'type'           => Order::ORDER_TYPE_TOURISM,        // 订单类型,购买会员订单
-                'total_amount'   => 0,
+            $order = new Order([
+                'remark' => $request->input('remark'),
+                'pay_status' => Order::PAY_STATUS_UNPAID,         // 订单状态，未支付
+                'type' => Order::ORDER_TYPE_TOURISM,        // 订单类型,购买会员订单
+                'total_amount' => 0,
             ]);
             // 订单关联到当前用户
             $order->user()->associate($user);
@@ -44,15 +44,15 @@ class OrdersController extends Controller
             $order->save();
             $totalAmount = 0;
             $totalProfit = 0;
-            $items       = $request->input('items');
+            $items = $request->input('items');
             // 遍历用户提交的 SKU
             foreach ($items as $data) {
-                $sku  = ProductSku::find($data['sku_id']);
+                $sku = ProductSku::find($data['sku_id']);
                 // 创建一个 OrderItem 并直接与当前订单关联
                 $item = $order->items()->make([
-                    'amount'         => $data['amount'],
-                    'price'          => $sku->price,
-                    'profit'         => $sku->profit ? $sku->profit : 0
+                    'amount' => $data['amount'],
+                    'price' => $sku->price,
+                    'profit' => $sku->profit ? $sku->profit : 0
                 ]);
                 $item->product()->associate($sku->product_id);
                 $item->productSku()->associate($sku);
@@ -62,7 +62,7 @@ class OrdersController extends Controller
             }
 
             // 更新订单总金额
-            $order->update(['total_amount' => $totalAmount,'total_profit' => $totalProfit]);
+            $order->update(['total_amount' => $totalAmount, 'total_profit' => $totalProfit]);
 
             // 返回订单详情
             return $this->response->item($order, new OrderTransformer())->setStatusCode(201);
@@ -72,23 +72,24 @@ class OrdersController extends Controller
     }
 
     // 门店经理和酱紫玩家订单订单
-    public function storeMember(StoreMemberRequest $request){
+    public function storeMember(StoreMemberRequest $request)
+    {
         $verifyData = \Cache::get($request->captcha_key);
         // 订单类型
         $type = $request->type == 'store' ? Order::ORDER_TYPE_STORE : Order::ORDER_TYPE_PLAYER;
 
         // 只用普通用户能购买
         // TODO
-        if($this->user()->identity !== User::USER_IDENTITY_ORDINARY){
+        if ($this->user()->identity !== User::USER_IDENTITY_ORDINARY) {
             return $this->response->error('请勿重复购买', 422);
         }
 
         // 检查当前用户门店订单是否存
-        if($this->user()->order()
-            ->where(function ($query){
-                $query->where('type','=',Order::ORDER_TYPE_STORE)
-                    ->orWhere('type','=',Order::ORDER_TYPE_PLAYER);
-            })->exists()){
+        if ($this->user()->order()
+            ->where(function ($query) {
+                $query->where('type', '=', Order::ORDER_TYPE_STORE)
+                    ->orWhere('type', '=', Order::ORDER_TYPE_PLAYER);
+            })->exists()) {
             return $this->response->error('请勿重复购买', 422);
         }
 
@@ -104,9 +105,9 @@ class OrdersController extends Controller
 
         // 创建订单
         $order = new Order([
-            'total_amount'   => Order::$memberPriceMap[$type],  // 订单总价
-            'pay_status'     => Order::PAY_STATUS_UNPAID,       // 订单状态，未支付
-            'type'           => $type                           // 订单类型,购买会员订单
+            'total_amount' => Order::$memberPriceMap[$type],  // 订单总价
+            'pay_status' => Order::PAY_STATUS_UNPAID,       // 订单状态，未支付
+            'type' => $type                           // 订单类型,购买会员订单
         ]);
 
         //关联用户
@@ -117,21 +118,41 @@ class OrdersController extends Controller
         return $this->response->item($order, new OrderTransformer())->setStatusCode(201);
     }
 
-    /**
-     * 订单前验证码
-     * @param CaptchaBuilder $captchaBuilder
-     * @return mixed
-     */
-    public function captcha(CaptchaBuilder $captchaBuilder){
-        $key         = 'order-captcha-'.str_random(15);
-        $captcha     = $captchaBuilder->build();
-        $expiredAt   = now()->addMinutes(2);
+    // 订单前验证码
+    public function captcha(CaptchaBuilder $captchaBuilder)
+    {
+        $key = 'order-captcha-' . str_random(15);
+        $captcha = $captchaBuilder->build();
+        $expiredAt = now()->addMinutes(2);
         \Cache::put($key, ['code' => $captcha->getPhrase()], $expiredAt);
 
         return $this->response->array([
-            'captcha_key'           => $key,
-            'expired_at'            => $expiredAt->toDateTimeString(),
+            'captcha_key' => $key,
+            'expired_at' => $expiredAt->toDateTimeString(),
             'captcha_image_content' => $captcha->inline()
         ])->setStatusCode(201);
+    }
+
+    // 旅游订单列表
+    public function tourism()
+    {
+        $user = $this->user;
+        $order = Order::query()->select(['id','no','total_amount','remark','pay_status','paid_at','closed','type','created_at'])
+            ->with(['items.product', 'items.productSku'])
+            ->where([['user_id', $user->id], ['type', Order::ORDER_TYPE_TOURISM]])
+            ->get();
+        $order->transform(function ($item){
+            $item->items->transform(function ($v){
+                $v_s['amount']                 = $v->amount;
+                $v_s['price']                  = $v->price;
+                $v_s['product']['index_image'] = $v->product->index_image;
+                $v_s['product']['id']          = $v->product->id;
+                $v_s['product']['price']       = $v->productSku->price;
+                $v_s['product']['title']       = $v->productSku->title;
+                return $v_s;
+            });
+            return $item;
+        });
+        return $this->response->array($order->toArray())->setStatusCode(200);
     }
 }

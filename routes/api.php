@@ -64,23 +64,25 @@ $api->version('v1', [
             $api->get('user', 'UsersController@me')
                 ->name('api.user.show');
 
-            // 用户会员购买订单信息
+            // 用户会员信息，根据订单状态获取
             $api->get('user/member/order/info','UsersController@memberOrderInfo')
                 ->name('api.user.member.order.info');
-            // 用户旅游订单信息
-            $api->get('user/tourism/order','UsersController@tourismOrderIndex')
-                ->name('api.user.tourism.order.index');
 
             // 订单前的验证码
             $api->get('order/captcha','OrdersController@captcha')
                 ->name('api.order.captcha');
 
-            // 购买门店经理
+            // 门店经理订单
             $api->post('order/store-member','OrdersController@storeMember')
                 ->name('api.order.store.member');
-            // 购买旅游产品
+
+            // 旅游产品订单
             $api->post('order/store-product','OrdersController@storeProduct')
                 ->name('api.order.store.product');
+
+            // 用户旅游订单列表
+            $api->get('order/tourism','OrdersController@tourism')
+                ->name('api.order.tourism.index');
 
             // 获取用户团队
             $api->get('team','TeamsController@index');

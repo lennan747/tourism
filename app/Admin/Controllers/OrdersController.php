@@ -37,13 +37,6 @@ class OrdersController extends Controller
 
     public function show(Order $order, Content $content)
     {
-//        $players = \DB::table('teams')->where([['top_id', 17], ['depth', 1],['role','ordinary']])->pluck('player_id');
-//
-//        $total_sales = \DB::table('orders')->select(\DB::raw('SUM(total_amount) as total_sales'))
-//            ->whereIn('user_id',[17,16])
-//            ->where([['pay_status',Order::PAY_STATUS_PAID]])
-//            ->value('total_sales');
-//        dd($total_sales);
         return $content
             ->header('查看订单')
             // body 方法可以接受 Laravel 的视图作为参数
@@ -58,33 +51,43 @@ class OrdersController extends Controller
         // 验证
         $data = $this->validate($request, [
             'payment_method' => ['required'],
-            'remark' => ['nullable'],
+            'remark'         => ['nullable'],
+            'review'         => ['required']
         ], [], [
             'payment_method' => '支付方式',
             'remark' => '订单备注',
+            'review' => '是否通过',
         ]);
-
         // 判断当前订单发货状态是否为未发货
         if ($order->pay_status !== Order::PAY_STATUS_UNPAID) {
             throw new InvalidRequestException('该订单已支付');
         }
 
         // 将订单发货状态改为已发货，并存入物流信息
+
         $order->update([
-            'pay_status' => Order::PAY_STATUS_PAID,
-            'payment_method' => $data['payment_method'],
+            'pay_status' => $data['review'] == 'true' ? Order::PAY_STATUS_PAID : Order::PAY_STATUS_UNPAID,
+            'payment_method' => $data['review'] == 'true' ? $data['payment_method'] : null,
             'remark' => $data['remark'],
-            'paid_at' => Carbon::now(),
+            'paid_at' => $data['review'] == 'true' ? Carbon::now() : null,
             'closed' => true
         ]);
 
-        $this->dispatch(new Upgrade($order, config('app.order_ttl')));
+        // 审核通过进行分成任务
+        if($data['review'] == 'true'){
+            $this->dispatch(new Upgrade($order, config('app.order_ttl')));
+        }
         // 返回上一页
         $success = new MessageBag([
             'title' => '订单审核',
             'message' => '订单' . $order->no . '通过',
         ]);
-        return back()->with(compact('success'));
+
+        $error = new MessageBag([
+            'title' => '订单审核',
+            'message' => '订单' . $order->no . '不通过',
+        ]);
+        return back()->with(compact($data['review'] == 'true' ? 'success': 'error'));
     }
 
 
