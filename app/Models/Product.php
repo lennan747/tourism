@@ -16,12 +16,6 @@ class Product extends Model
         'on_sale' => 'boolean', // on_sale 是一个布尔类型的字段
     ];
 
-    // 与商品SKU关联
-    public function skus()
-    {
-        return $this->hasMany(ProductSku::class);
-    }
-
     public function setImageAttribute($image)
     {
         if (is_array($image)) {
@@ -32,5 +26,11 @@ class Product extends Model
     public function getImageAttribute($image)
     {
         return json_decode($image, true);
+    }
+
+    // 与商品SKU关联
+    public function skus()
+    {
+        return $this->hasMany(ProductSku::class);
     }
 }

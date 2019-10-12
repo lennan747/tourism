@@ -50,7 +50,7 @@ class InviteCode extends Model
         return $code;
     }
 
-
+    // 邀请码所属用户
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -29,7 +29,14 @@ class Withdraw extends Model
         'reason'
     ];
 
+    // 所属银行卡
     public function back_card(){
         return $this->belongsTo(BankCard::class);
+    }
+
+    // 所属用户
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

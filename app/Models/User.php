@@ -81,8 +81,9 @@ class User extends Authenticatable implements JWTSubject
         return 'phone';
     }
 
+    // 订单
     public function order(){
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class,'user_id','id');
     }
 
     // 上级
@@ -97,8 +98,21 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Team::class, 'top_id','id');
     }
 
+    // 邀请码
     public function invite_code()
     {
         return $this->hasOne(InviteCode::class,'user_id','id');
+    }
+
+    // 银行卡
+    public function bank_card()
+    {
+        return $this->hasMany(BankCard::class,'user_id','id');
+    }
+
+    // 提现记录
+    public function withdraw()
+    {
+        return $this->hasMany(Withdraw::class,'user_id','id');
     }
 }

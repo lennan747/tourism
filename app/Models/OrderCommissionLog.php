@@ -16,11 +16,13 @@ class OrderCommissionLog extends Model
         'desc'
     ];
 
+    // 分成所属订单
     public function order()
     {
         return $this->belongsTo(Order::class);
     }
 
+    // 分成给用户
     public function commission_user()
     {
         return $this->belongsTo(User::class);

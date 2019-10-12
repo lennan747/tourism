@@ -21,8 +21,8 @@ $api->version('v1', [
 ], function($api) {
     $api->group([
         'middleware' => 'api.throttle',
-        'limit' => config('api.rate_limits.sign.limit'),
-        'expires' => config('api.rate_limits.sign.expires'),
+        'limit'      => config('api.rate_limits.sign.limit'),
+        'expires'    => config('api.rate_limits.sign.expires'),
     ], function($api) {
         // 图片验证码
         $api->post('captchas', 'CaptchasController@store')
@@ -44,9 +44,9 @@ $api->version('v1', [
             ->name('api.authorizations.destroy');
     });
     $api->group([
-        'middleware' => 'api.throttle',
-        'limit' => config('api.rate_limits.access.limit'),
-        'expires' => config('api.rate_limits.access.expires'),
+        'middleware'  => 'api.throttle',
+        'limit'       => config('api.rate_limits.access.limit'),
+        'expires'     => config('api.rate_limits.access.expires'),
     ], function($api) {
         // 推荐商品列表
         $api->get('products/recommend', 'ProductsController@recommend')
@@ -63,29 +63,30 @@ $api->version('v1', [
             // 当前登录用户信息
             $api->get('user', 'UsersController@me')
                 ->name('api.user.show');
-
             // 用户会员信息，根据订单状态获取
             $api->get('user/member/order/info','UsersController@memberOrderInfo')
                 ->name('api.user.member.order.info');
-
             // 订单前的验证码
             $api->get('order/captcha','OrdersController@captcha')
                 ->name('api.order.captcha');
-
             // 门店经理订单
             $api->post('order/store-member','OrdersController@storeMember')
                 ->name('api.order.store.member');
-
             // 旅游产品订单
             $api->post('order/store-product','OrdersController@storeProduct')
                 ->name('api.order.store.product');
-
             // 用户旅游订单列表
             $api->get('order/tourism','OrdersController@tourism')
                 ->name('api.order.tourism.index');
-
             // 获取用户团队
             $api->get('team','TeamsController@index');
+
+            // 银行卡列表
+            $api->get('bank/card','BankCardsController@index');
+            // 添加银行卡
+            $api->post('bank/card','BankCardsController@store');
+            $api->put('bank/card/{card}','BankCardsController@update');
+            $api->delete('bank/card/{card}','BankCardsController@destroy');
         });
 
     });
