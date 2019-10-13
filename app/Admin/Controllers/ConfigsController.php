@@ -70,6 +70,32 @@ class ConfigsController extends Controller
             ->body($form->edit($id));
     }
 
+    public function about_us(Content $content)
+    {
+        $id = Config::query()->where('name','about_us')->value('id');
+        $form = new Form(new Config());
+        $form->text('title', '名称');
+        $form->editor('extra', '关于我们');
+
+        $form->setAction('/admin/configs/'.$id);
+        return $content
+            ->header('关于我们')
+            ->body($form->edit($id));
+    }
+
+    public function business_cooperation(Content $content)
+    {
+        $id = Config::query()->where('name','business_cooperation')->value('id');
+        $form = new Form(new Config());
+        $form->text('title', '名称');
+        $form->editor('extra', '商务合作');
+
+        $form->setAction('/admin/configs/'.$id);
+        return $content
+            ->header('商务合作')
+            ->body($form->edit($id));
+    }
+
     public function site(Content $content)
     {
         $id = Config::query()->where('name','site')->value('id');
@@ -89,13 +115,35 @@ class ConfigsController extends Controller
     {
         $id = Config::query()->where('name','wechat')->value('id');
         $form = new Form(new Config());
-        $form->image('image','客服二维码');
+        $form->image('image','微信客服二维码');
         $form->setAction('/admin/configs/'.$id);
         return $content
-            ->header('客服微信号')
+            ->header('微信客服二维码')
             ->body($form->edit($id));
     }
 
+    public function share_poster_bg(Content $content)
+    {
+        $id = Config::query()->where('name','share_poster_bg')->value('id');
+        $form = new Form(new Config());
+        $form->image('image','分享背景图片');
+        $form->setAction('/admin/configs/'.$id);
+        return $content
+            ->header('分享背景图片')
+            ->body($form->edit($id));
+    }
+
+
+    public function consumer_hotline(Content $content)
+    {
+        $id = Config::query()->where('name','consumer_hotline')->value('id');
+        $form = new Form(new Config());
+        $form->text('value','客服电话');
+        $form->setAction('/admin/configs/'.$id);
+        return $content
+            ->header('客服电话')
+            ->body($form->edit($id));
+    }
 
     public function bank_rate(Content $content)
     {
@@ -158,15 +206,15 @@ class ConfigsController extends Controller
     {
 
         $name = Config::query()->where('id' , $id)->value('name');
-        if($name == 'bank_rate' || $name == 'withdraw_date' || $name == 'withdraw_amount'){
+        if($name == 'bank_rate' || $name == 'withdraw_date' || $name == 'withdraw_amount' || $name == 'consumer_hotline'){
             Config::query()->where('id' , $id)->update(['value' => request()->value]);
         }
 
-        if($name == 'manager' || $name == 'player'){
+        if($name == 'manager' || $name == 'player' || $name == 'about_us' || $name == 'business_cooperation'){
             Config::query()->where('id' , $id)->update(['extra' => request()->extra]);
         }
 
-        if($name == 'wechat'){
+        if($name == 'wechat' || $name == 'share_poster_bg'){
             $uploader = new ImageUploadHandler();
             $result = $uploader->save(request()->image, 'site', $id);
             if ($result) {

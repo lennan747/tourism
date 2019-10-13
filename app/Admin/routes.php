@@ -57,4 +57,8 @@ Route::group([
     $router->get('configs/bank_rate','ConfigsController@bank_rate');
     $router->get('configs/withdraw_date','ConfigsController@withdraw_date');
     $router->get('configs/withdraw_amount','ConfigsController@withdraw_amount');
+    $router->get('configs/share_poster_bg','ConfigsController@share_poster_bg');
+    $router->get('configs/about_us','ConfigsController@about_us');
+    $router->get('configs/business_cooperation','ConfigsController@business_cooperation');
+    $router->get('configs/consumer_hotline','ConfigsController@consumer_hotline');
 });
