@@ -96,35 +96,37 @@ class ConfigsController extends Controller
             ->body($form->edit($id));
     }
 
-    public function wechat_rate(Content $content)
-    {
-        $id = Config::query()->where('name','wechat_rate')->value('id');
-        $form = new Form(new Config());
-        $form->rate('value','微信提现费率');
-        $form->setAction('/admin/configs/'.$id);
-        return $content
-            ->header('微信提现费率')
-            ->body($form->edit($id));
-    }
-    public function alipay_rate(Content $content)
-    {
-        $id = Config::query()->where('name','alipay_rate')->value('id');
-        $form = new Form(new Config());
-        $form->rate('value','支付宝提现费率');
-        $form->setAction('/admin/configs/'.$id);
-        return $content
-            ->header('微信提现费率')
-            ->body($form->edit($id));
-    }
 
     public function bank_rate(Content $content)
     {
         $id = Config::query()->where('name','bank_rate')->value('id');
         $form = new Form(new Config());
-        $form->rate('value','银行卡提现费率');
+        $form->rate('value','提现费率');
         $form->setAction('/admin/configs/'.$id);
         return $content
-            ->header('银行卡提现费率')
+            ->header('提现费率')
+            ->body($form->edit($id));
+    }
+
+    public function withdraw_amount(Content $content)
+    {
+        $id = Config::query()->where('name','withdraw_amount')->value('id');
+        $form = new Form(new Config());
+        $form->currency('value','每次提现最高额度')->symbol('￥');
+        $form->setAction('/admin/configs/'.$id);
+        return $content
+            ->header('每次提现最高额度')
+            ->body($form->edit($id));
+    }
+
+    public function withdraw_date(Content $content)
+    {
+        $id = Config::query()->where('name','withdraw_date')->value('id');
+        $form = new Form(new Config());
+        $form->text('value','每月提现日期');
+        $form->setAction('/admin/configs/'.$id);
+        return $content
+            ->header('每月提现日期    ')
             ->body($form->edit($id));
     }
 
@@ -156,7 +158,7 @@ class ConfigsController extends Controller
     {
 
         $name = Config::query()->where('id' , $id)->value('name');
-        if($name == 'wechat_rate' || $name == 'alipay_rate' || $name == 'bank_rate'){
+        if($name == 'bank_rate' || $name == 'withdraw_date' || $name == 'withdraw_amount'){
             Config::query()->where('id' , $id)->update(['value' => request()->value]);
         }
 
@@ -175,5 +177,23 @@ class ConfigsController extends Controller
         admin_toastr(trans('admin.save_succeeded'));
         return redirect('/admin/configs/'.$name);
 
+    }
+
+    /**
+     * Make a form builder.
+     *
+     * @return Form
+     */
+    protected function form()
+    {
+        $form = new Form(new Config);
+
+        $form->text('name', __('Name'));
+        $form->text('title', __('Title'));
+        $form->textarea('value', __('Value'));
+        $form->image('image','图片');
+        $form->textarea('extra', __('Extra a'));
+
+        return $form;
     }
 }

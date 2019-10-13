@@ -35,6 +35,13 @@ Route::group([
     $router->put('products/{id}', 'ProductsController@update');
     $router->post('products/upload', 'ProductsController@upload');
 
+    // 提现
+    //$router->resource('withdraws', WithdrawsController::class);
+    $router->get('withdraws', 'WithdrawsController@index');
+    $router->get('withdraws/{withdraw}/edit', 'WithdrawsController@edit');
+    $router->put('withdraws/{withdraw}', 'WithdrawsController@update')->name('admin.withdraws.update');
+
+
     // 站点配置
     //$router->resource('configs', ConfigsController::class);
     $router->get('configs','ConfigsController@index');
@@ -48,4 +55,6 @@ Route::group([
     $router->get('configs/wechat_rate','ConfigsController@wechat_rate');
     $router->get('configs/alipay_rate','ConfigsController@alipay_rate');
     $router->get('configs/bank_rate','ConfigsController@bank_rate');
+    $router->get('configs/withdraw_date','ConfigsController@withdraw_date');
+    $router->get('configs/withdraw_amount','ConfigsController@withdraw_amount');
 });

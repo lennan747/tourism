@@ -17,13 +17,12 @@ class CreateWithdrawsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('bank_card_id');
-            $table->foreign('bank_card_id')->references('id')->on('bank_cards');
             $table->decimal('application_amount',10,2)->nullable();
-            $table->dateTime('application_date')->nullable();
-            $table->dateTime('transfer_amount')->nullable();
+            $table->date('application_date')->nullable();
+            $table->decimal('transfer_amount',10,2)->nullable();
             $table->dateTime('transfer_date')->nullable();
-            $table->dateTime('handling_fee')->nullable();
+            $table->double('handling_fee',8,2)->nullable();
+            $table->text('bank_card');
             $table->string('status')->nullable();
             $table->string('reason')->nullable();
             $table->timestamps();

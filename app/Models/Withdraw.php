@@ -13,13 +13,13 @@ class Withdraw extends Model
 
     public static $reviewStatusMap = [
         self::REVIEW_STATUS_APPLICATION => '审核',
-        self::REVIEW_STATUS_BY          => '拒绝',
-        self::REVIEW_STATUS_REFUSE      => '通过'
+        self::REVIEW_STATUS_BY          => '通过',
+        self::REVIEW_STATUS_REFUSE      => '拒绝'
     ];
     //
     protected $fillable = [
         'user_id',
-        'bank_card_id',
+        'bank_card',
         'application_amount',
         'application_date',
         'transfer_amount',
@@ -29,10 +29,10 @@ class Withdraw extends Model
         'reason'
     ];
 
-    // 所属银行卡
-    public function back_card(){
-        return $this->belongsTo(BankCard::class);
-    }
+    protected $casts = [
+        'bank_card'   => 'json'
+    ];
+
 
     // 所属用户
     public function user()

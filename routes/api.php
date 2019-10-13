@@ -87,6 +87,10 @@ $api->version('v1', [
             $api->post('bank/card','BankCardsController@store');
             $api->put('bank/card/{card}','BankCardsController@update');
             $api->delete('bank/card/{card}','BankCardsController@destroy');
+
+            // 提现
+            $api->get('withdraw','WithdrawsController@index');
+            $api->post('withdraw','WithdrawsController@store');
         });
 
     });
