@@ -210,10 +210,24 @@ class Upgrade implements ShouldQueue
             }
             // 购买酱紫玩家
             if($this->order->type == Order::ORDER_TYPE_PLAYER){
+
+                // 不是普通用户不进行操作
+                // 门店经理订单和酱紫玩家只能购买一次
+                // 以购买用户不能购买
+                if($user->identity != User::USER_IDENTITY_ORDINARY){
+                    return;
+                }
+
+                // 更新用户信息
+                $user->identity = User::USER_IDENTITY_PLAYER;
+                $user->save();
+
                 // 如果没有上一级
                 if($user->parent_id == 0){
                     return;
                 }
+
+                // 获取团队队长
                 $top = \DB::table('users')->where('id',$user->parent_id)->first();
                 // 如果上一级不是酱紫玩家不分成
                 if($top->identity != User::USER_IDENTITY_PLAYER){
