@@ -61,4 +61,6 @@ Route::group([
     $router->get('configs/about_us','ConfigsController@about_us');
     $router->get('configs/business_cooperation','ConfigsController@business_cooperation');
     $router->get('configs/consumer_hotline','ConfigsController@consumer_hotline');
+    $router->get('configs/index_banner','ConfigsController@index_banner');
+    $router->get('configs/help','ConfigsController@help');
 });

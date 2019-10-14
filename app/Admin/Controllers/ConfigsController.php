@@ -70,6 +70,18 @@ class ConfigsController extends Controller
             ->body($form->edit($id));
     }
 
+    public function help(Content $content)
+    {
+        $id = Config::query()->where('name','help')->value('id');
+        $form = new Form(new Config());
+        $form->editor('extra', '帮助中心');
+
+        $form->setAction('/admin/configs/'.$id);
+        return $content
+            ->header('帮助中心')
+            ->body($form->edit($id));
+    }
+
     public function about_us(Content $content)
     {
         $id = Config::query()->where('name','about_us')->value('id');
@@ -119,6 +131,17 @@ class ConfigsController extends Controller
         $form->setAction('/admin/configs/'.$id);
         return $content
             ->header('微信客服二维码')
+            ->body($form->edit($id));
+    }
+
+    public function index_banner(Content $content)
+    {
+        $id = Config::query()->where('name','index_banner')->value('id');
+        $form = new Form(new Config());
+        $form->image('image','首页背景图');
+        $form->setAction('/admin/configs/'.$id);
+        return $content
+            ->header('首页背景图')
             ->body($form->edit($id));
     }
 
@@ -188,7 +211,7 @@ class ConfigsController extends Controller
         $grid = new Grid(new Config);
         $grid->column('title', '配置项目');
         $grid->column('do', '操作')->display(function (){
-            return '<a href="/admin/configs/'.$this->name.'" >查看</a>';
+            return '<a href="/admin/configs/'.$this->name.'" >help查看</a>';
         });
         $grid->disablePagination();
         $grid->disableFilter();
@@ -210,11 +233,11 @@ class ConfigsController extends Controller
             Config::query()->where('id' , $id)->update(['value' => request()->value]);
         }
 
-        if($name == 'manager' || $name == 'player' || $name == 'about_us' || $name == 'business_cooperation'){
+        if($name == 'manager' || $name == 'player' || $name == 'about_us' || $name == 'business_cooperation' || $name == 'help'){
             Config::query()->where('id' , $id)->update(['extra' => request()->extra]);
         }
 
-        if($name == 'wechat' || $name == 'share_poster_bg'){
+        if($name == 'wechat' || $name == 'share_poster_bg' || $name == 'index_banner'){
             $uploader = new ImageUploadHandler();
             $result = $uploader->save(request()->image, 'site', $id);
             if ($result) {

@@ -115,4 +115,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Withdraw::class,'user_id','id');
     }
+
+    public function parent()
+    {
+        return $this->hasOne(User::class,'id','parent_id');
+    }
+
 }

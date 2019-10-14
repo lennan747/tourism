@@ -20,6 +20,7 @@ class UserTransformer extends TransformerAbstract
             //'member_order'  => $user->order()->where([['user_id','=' ,$user->id], ['type','=', Order::ORDER_TYPE_MEMBER]])->first(),
             'created_at'    => (string) $user->created_at,
             'updated_at'    => (string) $user->updated_at,
+            'parent'        => $user->parent()->first()
         ];
     }
 }
