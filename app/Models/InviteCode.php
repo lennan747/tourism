@@ -33,7 +33,7 @@ class InviteCode extends Model
                 if (!$model->code) {
                     return false;
                 }else{
-                    $model->url = 'http://192.168.56.1:8888?invite_code='.$model->code;
+                    $model->url = config('app.qr_url').'?invite_code='.$model->code;
                 }
             }
         });
