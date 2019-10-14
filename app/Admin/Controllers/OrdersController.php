@@ -63,14 +63,13 @@ class OrdersController extends Controller
             throw new InvalidRequestException('该订单已支付');
         }
 
-        // 将订单发货状态改为已发货，并存入物流信息
-
+        // 将订单更新到已支付
         $order->update([
-            'pay_status' => $data['review'] == 'true' ? Order::PAY_STATUS_PAID : Order::PAY_STATUS_UNPAID,
+            'pay_status'     => $data['review'] == 'true' ? Order::PAY_STATUS_PAID : Order::PAY_STATUS_UNPAID,
             'payment_method' => $data['review'] == 'true' ? $data['payment_method'] : null,
-            'remark' => $data['remark'],
-            'paid_at' => $data['review'] == 'true' ? Carbon::now() : null,
-            'closed' => true
+            'remark'         => $data['remark'],
+            'paid_at'        => $data['review'] == 'true' ? Carbon::now() : null,
+            'closed'         => true
         ]);
 
         // 审核通过进行分成任务
