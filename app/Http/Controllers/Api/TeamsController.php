@@ -61,6 +61,6 @@ class TeamsController extends Controller
             return $this->response->array($data)->setStatusCode(200);
         }
 
-        return $this->response->errorNotFound();
+        return $this->response->noContent();
     }
 }

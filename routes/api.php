@@ -24,9 +24,13 @@ $api->version('v1', [
         'limit'      => config('api.rate_limits.sign.limit'),
         'expires'    => config('api.rate_limits.sign.expires'),
     ], function($api) {
-        // 图片验证码
-        $api->post('captchas', 'CaptchasController@store')
-            ->name('api.captchas.store');
+        // 创建注册图片验证码
+        $api->post('captchas/register', 'CaptchasController@register')
+            ->name('api.captchas.register');
+        // 创建忘记密码验证码
+        $api->post('captchas/reset_password', 'CaptchasController@reset_password')
+            ->name('api.captchas.password.reset');
+
         // 短信验证码
         $api->post('verificationCodes', 'VerificationCodesController@store')
             ->name('api.verificationCodes.store');
@@ -36,6 +40,9 @@ $api->version('v1', [
         // 用户登录
         $api->post('authorizations','AuthorizationsController@store')
             ->name('api.authorizations.store');
+        // 重置密码
+        $api->post('users/reset_password', 'UsersController@reset_password')
+            ->name('api.users.reset.password');
         // 刷新token
         $api->put('authorizations/current', 'AuthorizationsController@update')
             ->name('api.authorizations.update');

@@ -12,18 +12,7 @@ class ConfigController extends Controller
     //
     public function index()
     {
-        $seconds = '60';
-        $result = Cache::remember('site_config', $seconds, function () {
-            $site_configs = Config::all(['name','title','value','image','extra'])->toArray();
-            $configs = [];
-            foreach ($site_configs as $item){
-                $configs[$item['name']] = Arr::except($item, ['name']);;
-            }
-            return $configs;
-        });
-        if(true){
-            return $this->response->array($result)->setStatusCode(200);
-        }
-        return $this->response->array([])->setStatusCode(503);
+        $config = site_config();
+        return $this->response->array($config)->setStatusCode(200);
     }
 }

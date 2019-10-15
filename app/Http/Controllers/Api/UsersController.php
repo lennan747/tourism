@@ -52,6 +52,29 @@ class UsersController extends Controller
         return $this->response->item($this->user(), new UserTransformer());
     }
 
+    public function reset_password(UserRequest $request)
+    {
+        $verifyData = \Cache::get($request->verification_key);
+
+        // 422
+        if (!$verifyData) {
+            return $this->response->error('验证码已失效', 422);
+        }
+
+        // 返回401
+        if (!hash_equals($verifyData['code'], $request->verification_code)) {
+            return $this->response->errorUnauthorized('验证码错误');
+        }
+
+        // 获取用户
+        User::query()->where('phone',$verifyData['phone'])->update(['password' => bcrypt($request->password)]);
+
+        // 清除验证码缓存
+        \Cache::forget($request->verification_key);
+
+        return $this->response->noContent();
+    }
+
     /**
      * @return \Dingo\Api\Http\Response
      */

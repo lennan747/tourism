@@ -13,16 +13,28 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            // 邀请码以为空，存在就必须存在在users表中的id
-            'invite_code'         => [
-                'nullable',
-                'exists:invite_codes,code'
-            ],
-            'password'          => 'required|string|min:6',
-            'verification_key'  => 'required|string',
-            'verification_code' => 'required|string',
-        ];
+
+        switch ($this->method()) {
+            case 'POST':
+                return [
+                    // 邀请码以为空，存在就必须存在在users表中的id
+                    'invite_code'         => [
+                        'nullable',
+                        'exists:invite_codes,code'
+                    ],
+                    'password'          => 'required|string|min:6',
+                    'verification_key'  => 'required|string',
+                    'verification_code' => 'required|string',
+                ];
+                break;
+            case 'PUT':
+                return [
+                    'password'          => 'required|string|min:6',
+                    'verification_key'  => 'required|string',
+                    'verification_code' => 'required|string',
+                ];
+                break;
+        }
     }
 
     public function attributes()
