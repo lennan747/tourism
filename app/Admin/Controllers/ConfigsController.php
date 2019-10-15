@@ -244,7 +244,7 @@ class ConfigsController extends Controller
                 Config::query()->where('id' , $id)->update(['image' => $result['path']]);
             }
         }
-
+        update_site_config();
         admin_toastr(trans('admin.save_succeeded'));
         return redirect('/admin/configs/'.$name);
 

@@ -15,22 +15,22 @@
             </tr>
             <tr>
                 <td>申请用户：</td>
-                <td>{{ $withdraw->user->name }}</td>
+                <td class="text-red">{{ $withdraw->user->name }}</td>
                 <td>申请时间：</td>
-                <td>{{ $withdraw->created_at }}</td>
+                <td class="text-red">{{ $withdraw->created_at }}</td>
                 <td>申请金额：</td>
-                <td>{{ $withdraw->application_amount }}</td>
+                <td class="text-red">{{ $withdraw->application_amount }}</td>
             </tr>
             <tr>
                 <td colspan="6" class="text-center">提现银行卡信息</td>
             </tr>
             <tr>
                 <td>类型：</td>
-                <td>{{ $type[$withdraw->bank_card['type']] }}</td>
+                <td class="text-red">{{ $type[$withdraw->bank_card['type']] }}</td>
                 <td>账户名称：</td>
-                <td>{{ $withdraw->bank_card['card_name'] }}</td>
+                <td class="text-red">{{ $withdraw->bank_card['card_name'] }}</td>
                 <td>账户号：</td>
-                <td>{{ $withdraw->bank_card['account'] }}</td>
+                <td class="text-red">{{ $withdraw->bank_card['account'] }}</td>
             </tr>
 
             <!-- 拒绝 -->
@@ -49,11 +49,11 @@
                 </tr>
                 <tr>
                     <td>实际转账金额：</td>
-                    <td>{{ $withdraw->transfer_amount }}</td>
+                    <td class="text-red">{{ $withdraw->transfer_amount }}</td>
                     <td>转账时间：</td>
-                    <td>{{ $withdraw->transfer_date }}</td>
+                    <td class="text-red">{{ $withdraw->transfer_date }}</td>
                     <td>转账费率：</td>
-                    <td>{{ $withdraw->handling_fee }}%</td>
+                    <td class="text-red">{{ $withdraw->handling_fee }}%</td>
                 </tr>
             @endif
 
@@ -67,7 +67,7 @@
                 </div>
                 <div class="box-body">
                     <div class="col-md-12 text-center text-red">
-                        系统设置提现费率为 {{ site_config()['withdraw_date']['value'] }}%
+                        系统设置提现费率为 {{ site_config()['bank_rate']['value'] }}%
                     </div>
                     <form action="{{ route('admin.withdraws.update',['id' => $withdraw->id]) }}" method="post">
                         {{ method_field('PUT') }}
@@ -112,7 +112,7 @@
 <script>
     $(function () {
         let transfer_date = $('#transfer_date');
-        transfer_date.datepicker({autoclose: true, format: 'yyyy-mm-dd', language: 'zh-CN',})
+        transfer_date.datepicker({autoclose: true, format: 'yyyy-mm-dd', language: 'zh-CN',});
 
         const status = $('#status');
         status.select2();
