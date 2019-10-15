@@ -39,7 +39,7 @@ class InviteCode extends Model
         });
     }
 
-    public static function findAvailableCode($length = 16)
+    public static function findAvailableCode($length = 8)
     {
         do {
             // 生成一个指定长度的随机字符串，并转成大写

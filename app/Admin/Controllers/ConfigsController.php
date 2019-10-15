@@ -211,7 +211,7 @@ class ConfigsController extends Controller
         $grid = new Grid(new Config);
         $grid->column('title', '配置项目');
         $grid->column('do', '操作')->display(function (){
-            return '<a href="/admin/configs/'.$this->name.'" >help查看</a>';
+            return '<a href="/admin/configs/'.$this->name.'" >查看</a>';
         });
         $grid->disablePagination();
         $grid->disableFilter();
