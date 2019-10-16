@@ -7,45 +7,26 @@
  * Time: 23:12
  */
 
-/**
- * 获取系统配置
- * @return mixed
- */
-function site_config()
+
+function get_client_config()
 {
-    $seconds = 3600;
-    $result = \Cache::remember('site_config', $seconds, function () {
-        $site_configs = \DB::table('configs')->select('name', 'title', 'value', 'image', 'extra')->get();
-        $configs = [];
-        foreach ($site_configs as $item) {
-            $configs[$item->name] = [
-                'title' => $item->title,
-                'value' => $item->value,
-                'image' => $item->image,
-                'extra' => $item->extra,
-            ];
-        }
-        return $configs;
+    $seconds = 60;
+    $result = cache()->remember('client_config', $seconds, function () {
+        $site_configs = \DB::table('configs')->select('name', 'title', 'value')->get();
+        return $site_configs->keyBy('name');
     });
     return $result;
 }
 
-/**
- * 更新系统配置
- * @return mixed
- */
-function update_site_config()
+
+function update_client_config()
 {
-    $site_configs = \DB::table('configs')->select('name', 'title', 'value', 'image', 'extra')->get();
-    $configs = [];
-    foreach ($site_configs as $item) {
-        $configs[$item->name] = [
-            'title' => $item->title,
-            'value' => $item->value,
-            'image' => $item->image,
-            'extra' => $item->extra,
-        ];
-    }
-    return \Cache::put('site_config',$configs);
+    $site_configs = \DB::table('configs')->select('name', 'title', 'value')->get();
+    return cache()->put('client_config',$site_configs->keyBy('name'));
+}
+
+function destroy_client_config()
+{
+    return cache()->forget('client_config');
 }
 
